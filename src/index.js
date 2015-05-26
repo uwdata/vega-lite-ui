@@ -2,7 +2,7 @@
 /* globals window, angular */
 
 angular.module('vlui', [
-  'LocalStorageModule', 
+  'LocalStorageModule',
   'angular-websql'
   ])
   .constant('_', window._)
@@ -12,10 +12,11 @@ angular.module('vlui', [
   .constant('vg', window.vg)
   // Papa
   .constant('Papa', window.Papa)
-  .constant('Blob', window.Blob) 
-  .constant('URL', window.URL) 
+  .constant('Blob', window.Blob)
+  .constant('URL', window.URL)
   // Drop
   .constant('Drop', window.Drop)
+  .constant('PriorityQueue', window.PriorityQueue)
   // constants
   .constant('consts', {
     addCount: true, // add count field to Dataset.dataschema

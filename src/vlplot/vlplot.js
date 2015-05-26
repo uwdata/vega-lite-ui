@@ -1,11 +1,15 @@
 'use strict';
 
 angular.module('vlui')
-  .directive('vlPlot', function(vl, vg, $timeout, $q, Dataset, Config, consts, _, $document, Logger) {
+  .directive('vlPlot', function(vl, vg, $timeout, $q, Dataset, Config, consts, _, $document, Logger, PriorityQueue) {
     var counter = 0;
     var MAX_CANVAS_SIZE = 32767/2, MAX_CANVAS_AREA = 268435456/4;
 
-    var renderQueue = [],
+    var renderQueue = new PriorityQueue({
+        comparator: function(a, b){
+          return b.priority - a.priority;
+        }
+      }),
       rendering = false;
 
     function getRenderer(width, height) {
@@ -33,7 +37,8 @@ angular.module('vlui')
         tooltip: '=',
         configSet: '@',
         rescale: '=',
-        thumbnail: '='
+        thumbnail: '=',
+        priority: '='
       },
       replace: true,
       link: function(scope, element) {
@@ -149,7 +154,8 @@ angular.module('vlui')
         function renderQueueNext() {
           // render next item in the queue
           if (renderQueue.length > 0) {
-            renderQueue.shift()();
+            var next = renderQueue.dequeue();
+            next.parse();
           } else {
             // or say that no one is rendering
             rendering = false;
@@ -217,7 +223,10 @@ angular.module('vlui')
             parseVega();
           } else {
             // otherwise queue it
-            renderQueue.push(parseVega);
+            renderQueue.queue({
+              priority: scope.priority || 0,
+              parse: parseVega
+            });
           }
         }
 

@@ -47,7 +47,8 @@ angular.module('vlui')
         alwaysScrollable: '=',
         rescale: '=',
         tooltip: '=',
-        thumbnail: '='
+        thumbnail: '=',
+        priority: '='
       },
       link: function postLink(scope, element) {
         scope.Bookmarks = Bookmarks;
