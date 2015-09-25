@@ -31,8 +31,8 @@ angular.module('vlui')
 
         var funcsPopup = new Drop({
           content: element.find('.popup-new-dataset')[0],
-          target: element.find('.open-dataset-popup')[0],
-          position: 'center center',
+          target: document.body,
+          position: 'top left',
           openOn: false
         });
 
