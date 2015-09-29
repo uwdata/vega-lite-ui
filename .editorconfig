@@ -1,12 +1,18 @@
-# http://editorconfig.org
+# Top-most EditorConfig file: http://editorconfig.org/ for more info
 root = true
 
+# All files get certain space preferences
 [*]
+# Every file ends in a newline
+insert_final_newline = true
+# Always trim trailing whitespace (cleaner diffs)
+trim_trailing_whitespace = true
+# Consistent EOL characters
+end_of_line = lf
+# Set default charset
+charset = utf-8
+
+# Set indentation preferences for scripts, styles, templates, and config
+[*.{js,scss,html,yml}]
 indent_style = space
 indent_size = 2
-charset = utf-8
-trim_trailing_whitespace = true
-insert_final_newline = true
-
-[*.md]
-trim_trailing_whitespace = false
