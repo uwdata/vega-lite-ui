@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('vlui')
-  .directive('datasetSelector', function(Drop, Dataset, Config, Logger) {
+angular.module('vlui').directive('datasetSelector', [
+  'Drop', 'Dataset', 'Config', 'Logger',
+  function(Drop, Dataset, Config, Logger) {
     return {
       templateUrl: 'dataset/datasetselector.html',
       restrict: 'E',
@@ -43,4 +44,5 @@ angular.module('vlui')
         });
       }
     };
-  });
+  }
+]);

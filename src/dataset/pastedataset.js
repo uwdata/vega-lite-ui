@@ -6,8 +6,9 @@
  * @description
  * # pasteDataset
  */
-angular.module('vlui')
-  .directive('pasteDataset', function (Dataset, Alerts, Logger, Config, _, dl) {
+angular.module('vlui').directive('pasteDataset', [
+  'Dataset', 'Alerts', 'Logger', 'Config', '_', 'dl',
+  function (Dataset, Alerts, Logger, Config, _, dl) {
     return {
       templateUrl: 'dataset/pastedataset.html',
       restrict: 'E',
@@ -40,4 +41,5 @@ angular.module('vlui')
         };
       }
     };
-  });
+  }
+]);

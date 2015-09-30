@@ -74,8 +74,9 @@ function getNameMap(dataschema) {
   }, {});
 }
 
-angular.module('vlui')
-  .factory('Dataset', function($http, $q, Alerts, _, dl, vl) {
+angular.module('vlui').factory('Dataset', [
+  '$http', '$q', 'Alerts', '_', 'dl', 'vl',
+  function($http, $q, Alerts, _, dl, vl) {
     var Dataset = {};
 
     Dataset.datasets = datasets;
@@ -207,4 +208,5 @@ angular.module('vlui')
   };
 
   return Dataset;
-});
+}
+]);

@@ -2,8 +2,9 @@
 
 // Service for the spec config.
 // We keep this separate so that changes are kept even if the spec changes.
-angular.module('vlui')
-  .factory('Config', function(vl, _) {
+angular.module('vlui').factory('Config', [
+  'vl', '_',
+  function(vl, _) {
     var Config = {};
 
     Config.schema = vl.schema.schema.properties.config;
@@ -45,4 +46,5 @@ angular.module('vlui')
     };
 
     return Config;
-  });
+  }
+]);

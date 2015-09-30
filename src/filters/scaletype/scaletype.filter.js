@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('vlui')
-  .filter('scaleType', function() {
+angular.module('vlui').filter('scaleType', [
+  function() {
     return function(input) {
       var scaleTypes = {
         Q: 'Quantitative',
@@ -12,4 +12,5 @@ angular.module('vlui')
 
       return scaleTypes[input];
     };
-  });
+  }
+]);

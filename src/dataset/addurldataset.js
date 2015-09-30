@@ -6,8 +6,9 @@
  * @description
  * # addUrlDataset
  */
-angular.module('vlui')
-  .directive('addUrlDataset', function (Dataset, Logger) {
+angular.module('vlui').directive('addUrlDataset', [
+  'Dataset', 'Logger',
+  function (Dataset, Logger) {
     return {
       templateUrl: 'dataset/addurldataset.html',
       restrict: 'E',
@@ -32,4 +33,5 @@ angular.module('vlui')
         };
       }
     };
-  });
+  }
+]);

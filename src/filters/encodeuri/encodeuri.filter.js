@@ -8,9 +8,10 @@
  * # encodeUri
  * Filter in the vega-lite-ui.
  */
-angular.module('vlui')
-  .filter('encodeURI', function () {
+angular.module('vlui').filter('encodeURI', [
+  function () {
     return function (input) {
       return window.encodeURI(input);
     };
-  });
+  }
+]);
