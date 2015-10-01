@@ -6,8 +6,9 @@
  * @description
  * # visListItem
  */
-angular.module('vlui')
-  .directive('vlPlotGroup', function (Bookmarks, consts, vl, Dataset, Drop, Logger) {
+angular.module('vlui').directive('vlPlotGroup', [
+  'Bookmarks', 'consts', 'vl', 'Dataset', 'Drop', 'Logger',
+  function (Bookmarks, consts, vl, Dataset, Drop, Logger) {
     return {
       templateUrl: 'vlplotgroup/vlplotgroup.html',
       restrict: 'E',
@@ -139,4 +140,5 @@ angular.module('vlui')
         });
       }
     };
-  });
+  }
+]);

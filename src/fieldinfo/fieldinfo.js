@@ -6,8 +6,9 @@
  * @description
  * # fieldInfo
  */
-angular.module('vlui')
-  .directive('fieldInfo', function (Dataset, Drop, vl, consts) {
+angular.module('vlui').directive('fieldInfo', [
+  'Dataset', 'Drop', 'vl', 'consts',
+  function (Dataset, Drop, vl, consts) {
     return {
       templateUrl: 'fieldinfo/fieldinfo.html',
       restrict: 'E',
@@ -66,4 +67,5 @@ angular.module('vlui')
         });
       }
     };
-  });
+  }
+]);

@@ -7,8 +7,9 @@
  * # Bookmarks
  * Service in the vlui.
  */
-angular.module('vlui')
-  .service('Bookmarks', function(_, vl, localStorageService, Logger, Dataset) {
+angular.module('vlui').service('Bookmarks', [
+  '_', 'vl', 'localStorageService', 'Logger', 'Dataset',
+  function(_, vl, localStorageService, Logger, Dataset) {
     var Bookmarks = function() {
       this.dict = {};
       this.length = 0;
@@ -81,4 +82,5 @@ angular.module('vlui')
     };
 
     return new Bookmarks();
-  });
+  }
+]);

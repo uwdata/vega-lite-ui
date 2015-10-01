@@ -40,7 +40,13 @@ angular.module('vlui', [
       G: 'geo'
     }
   })
-  .config(function (AnalyticsProvider) {
-    AnalyticsProvider
-      .setAccount({ tracker: 'UA-44428446-4', name: 'voyager', trackEvent: true });
-  });
+  .config([
+    'AnalyticsProvider',
+    function (AnalyticsProvider) {
+      AnalyticsProvider.setAccount({
+        tracker: 'UA-44428446-4',
+        name: 'voyager',
+        trackEvent: true
+      });
+    }
+  ]);

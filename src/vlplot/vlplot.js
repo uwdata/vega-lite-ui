@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('vlui')
-  .directive('vlPlot', function(vl, vg, $timeout, $q, Dataset, Config, consts, _, $document, Logger, Heap) {
+angular.module('vlui').directive('vlPlot', [
+  'vl', 'vg', '$timeout', '$q', 'Dataset', 'Config', 'consts', '_', '$document', 'Logger', 'Heap',
+  function(vl, vg, $timeout, $q, Dataset, Config, consts, _, $document, Logger, Heap) {
     var counter = 0;
     var MAX_CANVAS_SIZE = 32767/2, MAX_CANVAS_AREA = 268435456/4;
 
@@ -258,4 +259,5 @@ angular.module('vlui')
         });
       }
     };
-  });
+  }
+]);

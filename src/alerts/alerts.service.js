@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('vlui')
-  .service('Alerts', function($timeout, _) {
+angular.module('vlui').service('Alerts', [
+  '$timeout', '_',
+  function($timeout, _) {
     var Alerts = {};
 
     Alerts.alerts = [];
@@ -22,4 +23,5 @@ angular.module('vlui')
     };
 
     return Alerts;
-  });
+  }
+]);

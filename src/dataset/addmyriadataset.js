@@ -6,8 +6,9 @@
  * @description
  * # addMyriaDataset
  */
-angular.module('vlui')
-  .directive('addMyriaDataset', function ($http, Dataset, consts) {
+angular.module('vlui').directive('addMyriaDataset', [
+  '$http', 'Dataset', 'consts',
+  function ($http, Dataset, consts) {
     return {
       templateUrl: 'dataset/addmyriadataset.html',
       restrict: 'E',
@@ -46,4 +47,5 @@ angular.module('vlui')
         };
       }
     };
-  });
+  }
+]);

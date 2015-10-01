@@ -6,8 +6,9 @@
  * @description
  * # bookmarkList
  */
-angular.module('vlui')
-  .directive('bookmarkList', function (Bookmarks, consts) {
+angular.module('vlui').directive('bookmarkList', [
+  'Bookmarks', 'consts',
+  function (Bookmarks, consts) {
     return {
       templateUrl: 'bookmarklist/bookmarklist.html',
       restrict: 'E',
@@ -23,4 +24,5 @@ angular.module('vlui')
         scope.consts = consts;
       }
     };
-  });
+  }
+]);

@@ -8,8 +8,9 @@
  * # reportUrl
  * Filter in the facetedviz.
  */
-angular.module('vlui')
-  .filter('reportUrl', function (compactJSONFilter, _, consts) {
+angular.module('vlui').filter('reportUrl', [
+  'compactJSONFilter', '_', 'consts',
+  function (compactJSONFilter, _, consts) {
     function voyagerReport(params) {
       var url = 'https://docs.google.com/forms/d/1T9ZA14F3mmzrHR7JJVUKyPXzrMqF54CjLIOjv2E7ZEM/viewform?';
 
@@ -57,4 +58,5 @@ angular.module('vlui')
     }
 
     return consts.appId === 'voyager' ? voyagerReport : vluiReport;
-  });
+  }
+]);
