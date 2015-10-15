@@ -3,4 +3,7 @@
   <select id="dataset-select" ng-model="Dataset.dataset" ng-change="datasetChanged()" ng-options="dataset.name group by dataset.group for dataset in Dataset.datasets track by dataset.id">
     <option value="">Add dataset...</option>
   </select>
+  <span class="select-data">
+    <a ng-click="loadData()">Load</a>
+  </span>
 </div>
