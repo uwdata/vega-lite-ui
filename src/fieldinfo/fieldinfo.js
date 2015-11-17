@@ -13,7 +13,7 @@ angular.module('vlui')
       restrict: 'E',
       replace: true,
       scope: {
-        field: '=',
+        fieldDef: '=',
         showType: '=',
         showInfo: '=',
         showCaret: '=',
@@ -27,12 +27,12 @@ angular.module('vlui')
         var funcsPopup;
         scope.Type = vl.Type;
         scope.typeNames = consts.typeNames;
-        scope.stats = Dataset.stats[scope.field.name];
+        scope.stats = Dataset.stats[scope.fieldDef.name];
         scope.containsType = function(types, type) {
           return _.contains(types, type);
         };
 
-        switch(scope.field.type){
+        switch(scope.fieldDef.type){
           case vl.Type.Ordinal:
             scope.icon = 'fa-font';
             break;
@@ -54,11 +54,11 @@ angular.module('vlui')
           }
         };
 
-        scope.func = function(field) {
-          return field.aggregate || field.timeUnit ||
-            (field.bin && 'bin') ||
-            field._aggregate || field._timeUnit ||
-            (field._bin && 'bin') || (field._any && 'auto');
+        scope.func = function(fieldDef) {
+          return fieldDef.aggregate || fieldDef.timeUnit ||
+            (fieldDef.bin && 'bin') ||
+            fieldDef._aggregate || fieldDef._timeUnit ||
+            (fieldDef._bin && 'bin') || (fieldDef._any && 'auto');
         };
 
         scope.$watch('popupContent', function(popupContent) {

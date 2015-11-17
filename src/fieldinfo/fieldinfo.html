@@ -2,29 +2,29 @@
   <span class="hflex full-width" ng-click="clicked($event)">
 
     <span class="type-caret"
-      ng-class="{active: !disableCountCaret || field.aggregate!=='count'}">
+      ng-class="{active: !disableCountCaret || fieldDef.aggregate!=='count'}">
       <i class="fa fa-caret-down" ng-show="showCaret"
       ></i>
       <span class="type fa {{icon}}"
         ng-show="showType"
-        title="{{typeNames[field.type]}}">
+        title="{{typeNames[fieldDef.type]}}">
       </span>
     </span>
 
-    <span ng-if="field.aggregate!=='count'"
+    <span ng-if="fieldDef.aggregate!=='count'"
       class="field-info-text">
-      <span ng-if="func(field)"
+      <span ng-if="func(fieldDef)"
         class="field-func"
-        ng-class="{any: field._any}"
+        ng-class="{any: fieldDef._any}"
         >
-        {{ func(field) }}
+        {{ func(fieldDef) }}
       </span><!--
       --><span class="field-name"
-        ng-class="{hasfunc: func(field), any: field._any}"
-        >{{ field.name | underscore2space }}</span>
+        ng-class="{hasfunc: func(fieldDef), any: fieldDef._any}"
+        >{{ fieldDef.name | underscore2space }}</span>
     </span>
 
-    <span ng-if="field.aggregate==='count'"
+    <span ng-if="fieldDef.aggregate==='count'"
       class="field-count field-info-text">
       <span class="field-name">COUNT</span>
     </span>
@@ -36,36 +36,36 @@
     </span>
 
    <span class="no-shrink info" ng-show="showInfo">
-      <i ng-if="field.aggregate !== 'count' && containsType([Type.Nominal, Type.Ordinal], field.type)"
+      <i ng-if="fieldDef.aggregate !== 'count' && containsType([Type.Nominal, Type.Ordinal], fieldDef.type)"
         class="fa fa-info-circle"
         tooltips tooltip-size="small"
         tooltip-html="
         <div class='tooltip-content'>
-          <strong>Name:</strong> {{field.name}}<br>
+          <strong>Name:</strong> {{fieldDef.name}}<br>
           <strong>Cardinality:</strong> {{stats.distinct | number}}<br>
           <strong>Min:</strong> {{stats.min}}<br>
           <strong>Max:</strong> {{stats.max}}<br>
           <strong>Sample:</strong> <span class='sample'>{{stats.sample.join(', ')}}</span>
         </div>"
         tooltip-side="right"></i>
-      <i ng-if="field.aggregate !== 'count' && field.type === Type.Temporal"
+      <i ng-if="fieldDef.aggregate !== 'count' && fieldDef.type === Type.Temporal"
         class="fa fa-info-circle"
         tooltips tooltip-size="small"
         tooltip-html="
         <div class='tooltip-content'>
-          <strong>Name:</strong> {{field.name}}<br>
+          <strong>Name:</strong> {{fieldDef.name}}<br>
           <strong>Cardinality:</strong> {{stats.distinct | number}}<br>
           <strong>Min:</strong> {{stats.min | date: short}}<br>
           <strong>Max:</strong> {{stats.max | date: short}}<br>
           <strong>Sample:</strong> <span class='sample'>{{stats.sample.join(', ')}}</span>
         </div>"
         tooltip-side="right"></i>
-      <i ng-if="field.aggregate !== 'count' && field.type === Type.Quantitative"
+      <i ng-if="fieldDef.aggregate !== 'count' && fieldDef.type === Type.Quantitative"
         class="fa fa-info-circle"
         tooltips tooltip-size="small"
         tooltip-html="
         <div class='tooltip-content'>
-          <strong>Name:</strong> {{field.name}}<br>
+          <strong>Name:</strong> {{fieldDef.name}}<br>
           <strong>Cardinality:</strong> {{stats.distinct | number}}<br>
           <strong>Min:</strong> {{stats.min | number}}<br>
           <strong>Max:</strong> {{stats.max | number}}<br>
@@ -77,7 +77,7 @@
         </div>"
         tooltip-side="right"></i>
         <!--<strong>Skew:</strong> {{stats.skew | number:2}}<br>-->
-      <i ng-if="field.aggregate === 'count'"
+      <i ng-if="fieldDef.aggregate === 'count'"
         class="fa fa-info-circle"
         tooltips tooltip-size="small"
         tooltip-html="

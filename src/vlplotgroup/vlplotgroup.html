@@ -2,17 +2,17 @@
   <div ng-show="showExpand || fieldSet || showTranspose || showBookmark && Bookmarks.isSupported || showToggle"
     class="vl-plot-group-header no-shrink">
     <div class="field-set-info" >
-      <field-info ng-repeat="field in fieldSet"
+      <field-info ng-repeat="fieldDef in fieldSet"
         ng-if="fieldSet"
-        field='field'
+        field-def='fieldDef'
         show-type='true'
         ng-class="{
-          selected: alwaysSelected || (isSelected && isSelected(field.name)),
-          unselected: isSelected && !isSelected(field.name),
-          highlighted: (highlighted||{})[field.name]
+          selected: alwaysSelected || (isSelected && isSelected(fieldDef.name)),
+          unselected: isSelected && !isSelected(fieldDef.name),
+          highlighted: (highlighted||{})[fieldDef.name]
         }"
-        ng-mouseover="(highlighted||{})[field.name] = true"
-        ng-mouseout="(highlighted||{})[field.name] = false"
+        ng-mouseover="(highlighted||{})[fieldDef.name] = true"
+        ng-mouseout="(highlighted||{})[fieldDef.name] = false"
       ></field-info>
     </div>
     <div class="toolbox">

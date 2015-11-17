@@ -1,8 +1,8 @@
 'use strict';
 
 function getNameMap(dataschema) {
-  return dataschema.reduce(function(m, field) {
-    m[field.name] = field;
+  return dataschema.reduce(function(m, fieldDef) {
+    m[fieldDef.name] = fieldDef;
     return m;
   }, {});
 }
@@ -32,14 +32,14 @@ angular.module('vlui')
 
     Dataset.fieldOrderBy = {};
 
-    Dataset.fieldOrderBy.type = function(field) {
-      if (field.aggregate==='count') return 4;
-      return typeOrder[field.type];
+    Dataset.fieldOrderBy.type = function(fieldDef) {
+      if (fieldDef.aggregate==='count') return 4;
+      return typeOrder[fieldDef.type];
     };
 
-    Dataset.fieldOrderBy.typeThenName = function(field) {
-      return Dataset.fieldOrderBy.type(field) + '_' +
-        (field.aggregate === 'count' ? '~' : field.name.toLowerCase());
+    Dataset.fieldOrderBy.typeThenName = function(fieldDef) {
+      return Dataset.fieldOrderBy.type(fieldDef) + '_' +
+        (fieldDef.aggregate === 'count' ? '~' : fieldDef.name.toLowerCase());
         // ~ is the last character in ASCII
     };
 
@@ -47,12 +47,12 @@ angular.module('vlui')
       return 0; // no swap will occur
     };
 
-    Dataset.fieldOrderBy.name = function(field) {
-      return field.name;
+    Dataset.fieldOrderBy.name = function(fieldDef) {
+      return fieldDef.name;
     };
 
-    Dataset.fieldOrderBy.cardinality = function(field, stats) {
-      return stats[field.name].distinct;
+    Dataset.fieldOrderBy.cardinality = function(fieldDef, stats) {
+      return stats[fieldDef.name].distinct;
     };
 
     Dataset.fieldOrder = Dataset.fieldOrderBy.typeThenName;
@@ -60,17 +60,17 @@ angular.module('vlui')
     Dataset.getSchema = function(data, stats, order) {
       var types = dl.type.inferAll(data),
         schema = _.reduce(types, function(s, type, name) {
-          var field = {
+          var fieldDef = {
             name: name,
             type: vl.data.types[type],
             primitiveType: type
           };
 
-          if (field.type === vl.Type.Quantitative && stats[field.name].distinct <= 5) {
-            field.type = vl.Type.Ordinal;
+          if (fieldDef.type === vl.Type.Quantitative && stats[fieldDef.name].distinct <= 5) {
+            fieldDef.type = vl.Type.Ordinal;
           }
 
-          s.push(field);
+          s.push(fieldDef);
           return s;
         }, []);
 

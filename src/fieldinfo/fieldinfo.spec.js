@@ -25,7 +25,7 @@ describe('Directive: fieldInfo', function () {
   }));
 
   it('should appear', inject(function ($compile) {
-    element = angular.element('<field-info field="{name:\'a\'}"></field-info>');
+    element = angular.element('<field-info field-def="{name:\'a\'}"></field-info>');
     element = $compile(element)(scope);
     scope.$digest();
     expect(element.find('.hflex')).to.be.ok;

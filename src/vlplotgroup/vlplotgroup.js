@@ -76,16 +76,16 @@ angular.module('vlui')
         scope.log.support = function(spec, encType) {
           if (!spec) { return false; }
           var encoding = spec.encoding,
-            field = encoding[encType];
+            encDef = encoding[encType];
 
-          return field && field.type === vl.Type.Quantitative && !field.bin;
+          return encDef && encDef.type === vl.Type.Quantitative && !encDef.bin;
         };
 
         scope.log.toggle = function(spec, encType) {
           if (!scope.log.support(spec, encType)) { return; }
 
-          var field = spec.encoding[encType],
-            scale = field.scale = field.scale || {};
+          var encDef = spec.encoding[encType],
+            scale = encDef.scale = encDef.scale || {};
 
           scale.type = scale.type === 'log' ? 'linear' : 'log';
           Logger.logInteraction(Logger.actions.LOG_TOGGLE, scope.chart.shorthand);
@@ -93,8 +93,8 @@ angular.module('vlui')
         scope.log.active = function(spec, encType) {
           if (!scope.log.support(spec, encType)) { return; }
 
-          var field = spec.encoding[encType],
-            scale = field.scale = field.scale || {};
+          var encDef = spec.encoding[encType],
+            scale = encDef.scale = encDef.scale || {};
 
           return scale.type === 'log';
         };
