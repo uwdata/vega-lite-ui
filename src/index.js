@@ -3,7 +3,8 @@
 
 angular.module('vlui', [
     'LocalStorageModule',
-    'angular-google-analytics'
+    'angular-google-analytics',
+    'angular-sortable-view'
   ])
   .constant('_', window._)
   // datalib, vegalite, vega
