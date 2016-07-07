@@ -3,7 +3,7 @@
     class="vl-plot-group-header no-shrink">
     <div class="field-set-info" >
       <field-info ng-repeat="fieldDef in fieldSet"
-        ng-if="fieldSet"
+        ng-if="fieldDef.field"
         field-def='fieldDef'
         show-type='true'
         ng-class="{
