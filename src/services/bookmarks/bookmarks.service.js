@@ -55,7 +55,8 @@ angular.module('vlui')
 
       chart.timeAdded = (new Date().getTime());
 
-      chart.stats = Dataset.stats;
+      // FIXME: this is not always a good idea
+      chart.schema = Dataset.schema;
 
       this.dict[shorthand] = _.cloneDeep(chart);
       this.updateLength();

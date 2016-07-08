@@ -24,7 +24,16 @@ describe('Directive: schemaListItem', function () {
         }
       }
     });
+
     $provide.constant('vl', vl);
+
+    var mockDataset = {
+      schema: {
+        stats: function() {return {}; }
+      },
+      onUpdate: []
+    };
+    $provide.value('Dataset', mockDataset);
   }));
 
 

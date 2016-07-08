@@ -14,8 +14,8 @@ describe('Directive: fieldInfo', function () {
   beforeEach(module('vlui', function($provide) {
     $provide.constant('vl', vl); // vl is loaded by karma
     $provide.constant('Dataset', {
-      stats: {
-        a: {}
+      schema: {
+        stats: function() { return {}; }
       }
     });
   }));

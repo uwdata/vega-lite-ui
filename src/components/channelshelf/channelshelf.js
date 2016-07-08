@@ -90,7 +90,7 @@ angular.module('vlui')
           Pills.set(scope.channelId, fieldDef ? _.cloneDeep(fieldDef) : {});
         }, true);
 
-        scope.$watchGroup(['allowedCasting[Dataset.dataschema.byName[encoding[channelId].field].type]', 'encoding[channel].aggregate'], function(arr){
+        scope.$watchGroup(['allowedCasting[Dataset.schema.type(encoding[channelId].field)]', 'encoding[channel].aggregate'], function(arr){
           var allowedTypes = arr[0], aggregate=arr[1];
           scope.allowedTypes = aggregate === 'count' ? [vl.type.QUANTITATIVE] : allowedTypes;
         });
