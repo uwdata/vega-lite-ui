@@ -1,14 +1,7 @@
 'use strict';
 
-function getNameMap(dataschema) {
-  return dataschema.reduce(function(m, fieldDef) {
-    m[fieldDef.field] = fieldDef;
-    return m;
-  }, {});
-}
-
 angular.module('vlui')
-  .factory('Dataset', function($http, $q, Alerts, _, vg, vl, cql, SampleData, Config, Logger) {
+  .factory('Dataset', function($http, $q, Alerts, _, util, vl, cql, SampleData, Config, Logger) {
     var Dataset = {};
 
     // Start with the list of sample datasets
@@ -18,7 +11,6 @@ angular.module('vlui')
     Dataset.dataset = datasets[1];
     Dataset.currentDataset = undefined;  // dataset before update
     Dataset.dataschema = [];
-    Dataset.dataschema.byName = {};
     Dataset.stats = {};
     Dataset.type = undefined;
 
@@ -51,35 +43,7 @@ angular.module('vlui')
       return fieldDef.field;
     };
 
-    Dataset.fieldOrderBy.cardinality = function(fieldDef, stats) {
-      return stats[fieldDef.field].distinct;
-    };
-
     Dataset.fieldOrder = Dataset.fieldOrderBy.typeThenName;
-
-    function getSchema(data, stats, order) {
-      // TODO: call cql's schema utility instead
-      var types = vg.util.type.inferAll(data),
-        schema = _.reduce(types, function(s, type, field) {
-          var fieldDef = {
-            field: field,
-            type: vl.data.types[type],
-            primitiveType: type
-          };
-
-          if (fieldDef.type === vl.type.QUANTITATIVE && stats[fieldDef.field].distinct <= 5) {
-            fieldDef.type = vl.type.ORDINAL;
-          }
-
-          s.push(fieldDef);
-          return s;
-        }, []);
-
-      schema = vg.util.stablesort(schema, order || Dataset.fieldOrderBy.typeThenName, Dataset.fieldOrderBy.field);
-
-      schema.push({ field: '*', aggregate: vl.aggregate.AggregateOp.COUNT, type: vl.type.QUANTITATIVE, title: 'Count' });
-      return schema;
-    }
 
     // update the schema and stats
     Dataset.onUpdate = [];
@@ -105,7 +69,7 @@ angular.module('vlui')
              data = response.data;
              Dataset.type = 'json';
           } else {
-            data = vg.util.read(response.data, {type: 'csv'});
+            data = util.read(response.data, {type: 'csv'});
             Dataset.type = 'csv';
           }
 
@@ -125,41 +89,31 @@ angular.module('vlui')
       return updatePromise;
     };
 
-    function updateFromData(dataset, data) {
-      Dataset.data = data;
-
-      // TODO: use cql's new schema utility instead
-      Dataset.currentDataset = dataset;
-      Dataset.stats = vg.util.summary(data).reduce(function(s, profile) {
-        s[profile.field] = profile;
-        return s;
-      }, {
-        '*': {
-          max: data.length,
-          min: 0
-        }
+    function getFieldDefs(schema, order) {
+      var fieldDefs = schema.fields().map(function(field) {
+        return {
+          field: field,
+          type: schema.type(field),
+          primitiveType: schema.primitiveType(field)
+        };
       });
 
-      for (var fieldName in Dataset.stats) {
-        if (fieldName !== '*') {
-          Dataset.stats[fieldName].sample = _.sample(_.map(Dataset.data, fieldName), 7);
-        }
-      }
+      fieldDefs = util.stablesort(fieldDefs, order || Dataset.fieldOrderBy.typeThenName, Dataset.fieldOrderBy.field);
 
-      // TODO: remove and use cql's fieldSchemaIndex instead
-      Dataset.dataschema = getSchema(Dataset.data, Dataset.stats);
+      fieldDefs.push({ field: '*', aggregate: vl.aggregate.AggregateOp.COUNT, type: vl.type.QUANTITATIVE, title: 'Count' });
+      return fieldDefs;
+    }
 
-      Dataset.schema = new cql.schema.Schema(Dataset.dataschema);
 
-      // TODO: remove this object once we consolidate them in cql
-      Dataset.tmpStats = new cql.stats.Stats(Dataset.dataschema.map(function(fieldSchema) {
-        var fieldStats = vg.util.duplicate(fieldSchema);
-        fieldStats.distinct = Dataset.stats[fieldSchema.field].distinct;
-        return fieldStats;
-      }));
+    function updateFromData(dataset, data) {
+      Dataset.data = data;
+      Dataset.currentDataset = dataset;
 
-      // TODO: remove and use cql's fieldSchemaIndex instead
-      Dataset.dataschema.byName = getNameMap(Dataset.dataschema);
+      Dataset.schema = cql.schema.Schema.build(data);
+      // TODO: find all reference of Dataset.stats.sample and replace
+
+      // TODO: find all reference of Dataset.dataschema and replace
+      Dataset.dataschema = getFieldDefs(Dataset.schema);
     }
 
     Dataset.add = function(dataset) {

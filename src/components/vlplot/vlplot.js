@@ -140,8 +140,8 @@ angular.module('vlui')
           var vlSpec = _.cloneDeep(scope.chart.vlSpec);
           vg.util.extend(vlSpec.config, Config[configSet]());
 
-          // use chart stats if available (for example from bookmarks)
-          var stats = scope.chart.stats || Dataset.stats;
+          // FIXME: use chart stats if available (for example from bookmarks)
+          var schema = scope.chart.schema || Dataset.schema;
 
           // Special Rules
           var encoding = vlSpec.encoding;
@@ -149,8 +149,7 @@ angular.module('vlui')
             // put x-axis on top if too high-cardinality
             if (encoding.y && encoding.y.field && [vl.type.NOMINAL, vl.type.ORDINAL].indexOf(encoding.y.type) > -1) {
               if (encoding.x) {
-                var fieldStats = stats[encoding.y.field];
-                if (fieldStats && vl.fieldDef.cardinality(encoding.y, stats) > 30) {
+                if (schema.cardinality(encoding.y) > 30) {
                   (encoding.x.axis = encoding.x.axis || {}).orient = 'top';
                 }
               }
@@ -158,17 +157,17 @@ angular.module('vlui')
 
             // Use smaller band size if has X or Y has cardinality > 10 or has a facet
             if ((encoding.row && encoding.y) ||
-                (encoding.y && stats[encoding.y.field] && vl.fieldDef.cardinality(encoding.y, stats) > 10)) {
+                (encoding.y && schema.cardinality(encoding.y) > 10)) {
               (encoding.y.scale = encoding.y.scale || {}).bandSize = 12;
             }
 
             if ((encoding.column && encoding.x) ||
-                (encoding.x && stats[encoding.x.field] && vl.fieldDef.cardinality(encoding.x, stats) > 10)) {
+                (encoding.x && schema.cardinality(encoding.x) > 10)) {
               (encoding.x.scale = encoding.x.scale || {}).bandSize = 12;
             }
 
             if (encoding.color && encoding.color.type === vl.type.NOMINAL &&
-                vl.fieldDef.cardinality(encoding.color, stats) > 10) {
+                schema.cardinality(encoding.color) > 10) {
               (encoding.color.scale = encoding.color.scale || {}).range = 'category20';
             }
           }

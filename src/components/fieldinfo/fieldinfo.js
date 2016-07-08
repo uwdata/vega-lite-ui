@@ -29,14 +29,14 @@ angular.module('vlui')
         scope.vlType = vl.type;
         scope.isEnumSpec = cql.enumSpec.isEnumSpec;
 
-        scope.typeName = null; // created by a watcher later
-        scope.icon = null; // created by a watcher later
+        // Properties that are created by a watcher later
+        scope.typeName = null;
+        scope.icon = null;
+        scope.null = null;
 
-        scope.stats = Dataset.stats[scope.fieldDef.field];
         scope.containsType = function(types, type) {
           return _.includes(types, type);
         };
-
 
         scope.clicked = function($event){
           if(scope.action && $event.target !== element.find('.fa-caret-down')[0] &&
@@ -104,6 +104,9 @@ angular.module('vlui')
         scope.$watch('fieldDef', function(fieldDef) {
           scope.icon = getTypeDictValue(fieldDef.type, TYPE_ICONS);
           scope.typeName = getTypeDictValue(fieldDef.type, TYPE_NAMES);
+          if (fieldDef.field && Dataset.schema) { // only calculate stats if we have field attached and have schema ready
+            scope.stats = Dataset.schema.stats(fieldDef);
+          }
         });
 
         scope.$on('$destroy', function() {

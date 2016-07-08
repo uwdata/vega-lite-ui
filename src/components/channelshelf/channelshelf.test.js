@@ -14,12 +14,13 @@ describe('Directive: channelShelf', function() {
   var element, scope, $compile;
 
   beforeEach(module('vlui', function($provide) {
-    $provide.constant('Dataset', {
-      stats: {
-        a: {}
+    var mockDataset = {
+      schema: {
+        stats: function() {return {}; }
       },
       onUpdate: []
-    });
+    };
+    $provide.value('Dataset', mockDataset);
   }));
 
   beforeEach(inject(function($rootScope, _$compile_) {

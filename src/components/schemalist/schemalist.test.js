@@ -14,11 +14,8 @@ describe('Directive: schemaList', function() {
 
   beforeEach(module('vlui', function($provide) {
     var mockDataset = {
-      dataschema: [{field: 'foo'}, {field: 'bar'}, {field: 'baz'}],
-      stats: {
-        foo: {},
-        bar: {},
-        baz: {}
+      schema: {
+        stats: function() {return {}; }
       },
       onUpdate: []
     };
