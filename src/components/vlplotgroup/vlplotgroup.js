@@ -60,6 +60,15 @@ angular.module('vlui')
         scope.consts = consts;
         scope.Dataset = Dataset;
 
+        // export VL spec and annotation
+        scope.export = function() {
+          scope.chart.vlSpec.description = Bookmarks.annotations[scope.chart.shorthand];
+          var specWindow = window.open();
+          specWindow.document.open();
+          specWindow.document.write('<html><body><pre>' + JSON.stringify(scope.chart.vlSpec, null, 2) + '</pre></body></html>');  
+          specWindow.document.close();
+        }
+
         // Defer rendering the debug Drop popup until it is requested
         scope.renderPopup = false;
         // Use _.once because the popup only needs to be initialized once

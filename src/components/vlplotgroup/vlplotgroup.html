@@ -72,6 +72,12 @@
         <i class="fa fa-bookmark"></i>
         <small ng-if="showLabel">Bookmark</small>
       </a>
+      <a
+        class="command"
+        ng-click="export()">
+        <i class="fa fa-code"></i>
+        <small ng-if="showLabel">Export Spec</small>
+      </a>
       <a ng-if="showExpand"
         ng-click="expandAction()"
         class="command"
