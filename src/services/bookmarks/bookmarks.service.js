@@ -27,6 +27,25 @@ angular.module('vlui')
       this.save();
     }
 
+    // export all bookmarks and annotations
+    proto.export = function() {
+      var dictionary = this.dict;
+
+      // prepare export data
+      var exportSpecs = [];
+      _.forEach(this.list, function(bookmark) {
+        var spec = bookmark.chart.vlSpec;
+        spec.description = dictionary[bookmark.shorthand].annotation;
+        exportSpecs.push(spec);
+      })
+      
+      // write export data in a new tab
+      var exportWindow = window.open();
+      exportWindow.document.open();
+      exportWindow.document.write('<html><body><pre>' + JSON.stringify(exportSpecs, null, 2) + '</pre></body></html>');
+      exportWindow.document.close();
+    }
+
     proto.load = function() {
       this.list = localStorageService.get('bookmarkList') || [];
 
