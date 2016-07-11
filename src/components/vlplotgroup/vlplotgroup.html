@@ -98,4 +98,11 @@
     tooltip="tooltip"
   ></vl-plot>
 
+  <textarea class="annotation"
+    ng-if="Bookmarks.isBookmarked(chart.shorthand)"  
+    ng-model="Bookmarks.annotations[chart.shorthand]"
+    ng-change="Bookmarks.saveAnnotations(chart.shorthand)"
+    placeholder = "notes"
+  ></textarea>
+
 </div>
