@@ -6,8 +6,9 @@
   </div>
   <div class="flex-grow-1 scroll-y">
     <div ng-if="Bookmarks.length > 0"
-        class="hflex flex-wrap"
-        sv-root sv-part="Bookmarks.list" sv-on-sort="Bookmarks.reorder()">
+      class="hflex flex-wrap"
+      sv-root sv-part="Bookmarks.list" sv-on-sort="Bookmarks.reorder()">
+
       <vl-plot-group
         ng-repeat="bookmark in Bookmarks.list | orderObjectBy : 'timeAdded' : false"
         class="wrapped-vl-plot-group card"
@@ -29,6 +30,7 @@
 
         sv-element>
       </vl-plot-group>
+      <div sv-placeholder></div>
       <!-- FIXME: where does this field reference come from-->
     </div>
     <div class="vis-list-empty" ng-if="Bookmarks.length === 0">

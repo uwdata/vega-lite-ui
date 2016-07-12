@@ -12,7 +12,7 @@
 // TODO consider if this can just be moved to .vis-list
 .vl-plot-group.wrapped-vl-plot-group {
   max-width: 520px;
-  max-height: 410px;
+  max-height: 390px;
   flex-grow: 1;
   padding-right: 11px;
   padding-bottom: 11px;
@@ -25,7 +25,7 @@
 .vl-plot-group.row-vl-plot-group {
   max-width: 100%;
 
-  max-height: 410px;
+  max-height: 390px;
 
   &.selected {
     border: 3px solid #aaa;
