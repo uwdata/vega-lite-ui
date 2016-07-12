@@ -52,17 +52,6 @@ angular.module('vlui')
       Logger.logInteraction(Logger.actions.BOOKMARK_CLEAR);
     };
 
-    proto.toggle = function(chart) {
-
-      var shorthand = chart.shorthand;
-
-      if (this.isBookmarked(shorthand)) {
-        this.remove(chart);
-      } else {
-        this.add(chart);
-      }
-    };
-
     proto.add = function(chart) {
       var shorthand = chart.shorthand;
 

@@ -60,6 +60,24 @@ angular.module('vlui')
         scope.consts = consts;
         scope.Dataset = Dataset;
 
+        // bookmark alert
+        scope.showBookmarkAlert = false;
+        scope.toggleBookmark = function(chart) {
+          if (Bookmarks.isBookmarked(chart.shorthand)) {
+            scope.showBookmarkAlert = !scope.showBookmarkAlert; // toggle alert
+          }
+          else {
+            Bookmarks.add(chart);
+          }
+        }
+        scope.removeBookmark = function(chart) {
+          Bookmarks.remove(chart);
+          scope.showBookmarkAlert = false;
+        }
+        scope.keepBookmark = function() {
+          scope.showBookmarkAlert = false;
+        }
+
         // Defer rendering the debug Drop popup until it is requested
         scope.renderPopup = false;
         // Use _.once because the popup only needs to be initialized once

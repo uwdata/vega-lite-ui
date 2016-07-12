@@ -65,19 +65,30 @@
         <i class="fa fa-refresh transpose"></i>
         <small ng-if="showLabel">Swap X/Y</small>
       </a>
+      
       <a ng-if="showBookmark && Bookmarks.isSupported"
         class="command"
-        ng-click="Bookmarks.toggle(chart)"
+        ng-click="toggleBookmark(chart)"
         ng-class="{disabled: !chart.vlSpec.encoding, active: Bookmarks.isBookmarked(chart.shorthand)}">
         <i class="fa fa-bookmark"></i>
         <small ng-if="showLabel">Bookmark</small>
       </a>
       <a ng-if="showExpand"
         ng-click="expandAction()"
-        class="command"
-        >
+        class="command">
         <i class="fa fa-expand"></i>
       </a>
+      <div ng-if="showBookmarkAlert"
+        class="bookmark-alert">
+        <div>Remove bookmark?</div>
+        <small>Your notes will be lost.</small>
+        <div>
+          <a ng-click="removeBookmark(chart)">
+            <i class="fa fa-trash-o"></i> remove it
+          </a>
+          <a ng-click="keepBookmark()"><i class="fa fa-bookmark"></i> keep it </a>
+        </div>
+      </div>
     </div>
   </div>
 
