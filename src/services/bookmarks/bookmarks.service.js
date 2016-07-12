@@ -11,7 +11,7 @@ angular.module('vlui')
   .service('Bookmarks', function(_, vl, localStorageService, Logger, Dataset) {
     var Bookmarks = function() {
       this.list = [];
-      this.annotations = {};
+      this.dict = {};
       this.length = 0;
       this.isSupported = localStorageService.isSupported;
     };
@@ -28,7 +28,7 @@ angular.module('vlui')
 
     proto.saveAnnotations = function(shorthand) {
       _.find(this.list, function(bookmark) { return bookmark.shorthand === shorthand; })
-        .chart.annotation = this.annotations[shorthand];
+        .chart.annotation = this.dict[shorthand].annotation;
       this.save();
     }
 
@@ -36,17 +36,17 @@ angular.module('vlui')
       this.list = localStorageService.get('bookmarkList') || [];
       this.updateLength();
 
-      // load annotations
-      var annotations = this.annotations;
+      // populate this.dict
+      var dictionary = this.dict;
       _.forEach(this.list, function(bookmark) {
-        annotations[bookmark.shorthand] = bookmark.chart.annotation;
+        dictionary[bookmark.shorthand] = _.cloneDeep(bookmark.chart);
       });
     };
 
     proto.clear = function() {
       this.list.splice(0, this.list.length);
       this.updateLength();
-      this.annotations = {};
+      this.dict = {};
       this.save();
 
       Logger.logInteraction(Logger.actions.BOOKMARK_CLEAR);
@@ -61,7 +61,7 @@ angular.module('vlui')
 
       chart.stats = Dataset.stats;
 
-      chart.annotation = this.annotations[chart.shorthand];
+      this.dict[chart.shorthand] = _.cloneDeep(chart);
 
       this.list.push({shorthand: shorthand, chart: _.cloneDeep(chart)});
 
@@ -83,8 +83,8 @@ angular.module('vlui')
       }
       this.updateLength();
 
-      // remove annotation
-      delete this.annotations[chart.shorthand];
+      // remove bookmark from this.dict
+      delete this.dict[chart.shorthand];
 
       this.save();
 
@@ -96,7 +96,7 @@ angular.module('vlui')
     }
 
     proto.isBookmarked = function(shorthand) {
-      return _.some(this.list, function(bookmark) { return bookmark.shorthand === shorthand; });
+      return this.dict.hasOwnProperty(shorthand);
     };
 
     return new Bookmarks();
