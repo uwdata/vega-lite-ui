@@ -12,15 +12,10 @@ angular.module('vlui')
     var Bookmarks = function() {
       this.list = [];
       this.dict = {};
-      this.length = 0;
       this.isSupported = localStorageService.isSupported;
     };
 
     var proto = Bookmarks.prototype;
-
-    proto.updateLength = function() {
-      this.length = this.list.length;
-    };
 
     proto.save = function() {
       localStorageService.set('bookmarkList', this.list);
@@ -34,7 +29,6 @@ angular.module('vlui')
 
     proto.load = function() {
       this.list = localStorageService.get('bookmarkList') || [];
-      this.updateLength();
 
       // populate this.dict
       var dictionary = this.dict;
@@ -45,7 +39,6 @@ angular.module('vlui')
 
     proto.clear = function() {
       this.list.splice(0, this.list.length);
-      this.updateLength();
       this.dict = {};
       this.save();
 
@@ -65,7 +58,6 @@ angular.module('vlui')
 
       this.list.push({shorthand: shorthand, chart: _.cloneDeep(chart)});
 
-      this.updateLength();
       this.save();
 
       Logger.logInteraction(Logger.actions.BOOKMARK_ADD, shorthand);
@@ -81,7 +73,6 @@ angular.module('vlui')
       if (index >= 0) {
         this.list.splice(index, 1);
       }
-      this.updateLength();
 
       // remove bookmark from this.dict
       delete this.dict[chart.shorthand];

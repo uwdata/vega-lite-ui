@@ -1,11 +1,11 @@
 <modal id="bookmark-list" ng-if="Bookmarks.isSupported">
   <div class="modal-header card no-top-margin no-right-margin">
     <modal-close-button on-close="logBookmarksClosed()"></modal-close-button>
-    <h2 class="no-bottom-margin">Bookmarks ({{ Bookmarks.length }})</h2>
+    <h2 class="no-bottom-margin">Bookmarks ({{ Bookmarks.list.length }})</h2>
     <a ng-click="Bookmarks.clear()"><i class="fa fa-trash-o"></i> Clear all</a>
   </div>
   <div class="flex-grow-1 scroll-y">
-    <div ng-if="Bookmarks.length > 0"
+    <div ng-if="Bookmarks.list.length > 0"
       class="hflex flex-wrap"
       sv-root sv-part="Bookmarks.list" sv-on-sort="Bookmarks.reorder()">
 
@@ -33,7 +33,7 @@
       <div sv-placeholder></div>
       <!-- FIXME: where does this field reference come from-->
     </div>
-    <div class="vis-list-empty" ng-if="Bookmarks.length === 0">
+    <div class="vis-list-empty" ng-if="Bookmarks.list.length === 0">
       You have no bookmarks
     </div>
   </div>
