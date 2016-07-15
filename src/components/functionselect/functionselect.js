@@ -22,17 +22,16 @@ angular.module('vlui')
 
         // timeUnits for T
         var timeUnits = {
-          aboveFold: ["year", "quarter", "month", "date", "day", "hours", "yearmonthdate"],
+          aboveFold: [undefined, "year", "quarter", "month", "date", "day", "hours", "minutes", "seconds", "yearmonthdate"],
           belowFold: ["hoursminutes", "hoursminutesseconds", "milliseconds", 
-          "minutes", "minutesseconds", "quartermonth", "seconds", "secondsmilliseconds", 
-          "yeardate", "yearday", "yearmonth", "yearmonthday", "yearmonthdayhours", 
-          "yearmonthdayhoursminutes", "yearmonthdayhoursminutesseconds", "yearquarter", "yearquartermonth"]
+            "minutesseconds", "secondsmilliseconds", "yearmonth", "yearmonthday", "yearmonthdayhours", 
+            "yearmonthdayhoursminutes", "yearmonthdayhoursminutesseconds", "yearquarter"]
         }
 
         // aggregations for Q
         var aggregations = {
-          aboveFold: ["min", "max", "median", "mean", "sum"],
-          belowFold: ["argmax", "argmin", "average", "distinct",
+          aboveFold: [undefined, "min", "max", "median", "mean", "sum"],
+          belowFold: ["average", "distinct",
             "missing", "modeskew", "q1", "q3", "stdev", "stdevp", "valid", "values", "variance", "variancep"] // there is no "count" for Q
         }
 
@@ -109,8 +108,7 @@ angular.module('vlui')
             scope.func.list.aboveFold=[COUNT];
             scope.func.selected = COUNT;
           } else {
-            scope.func.list.aboveFold = ( isOrdinalShelf && (isQ || isT) ? [] : [undefined])
-              .concat( isT ? timeUnits.aboveFold : [] )
+            scope.func.list.aboveFold = [].concat( isT ? timeUnits.aboveFold : [] )
               .concat( isQ ? aggregations.aboveFold : [] )
               // TODO: check supported type based on primitive data?
               .concat( isQ ? ['bin'] : []);
