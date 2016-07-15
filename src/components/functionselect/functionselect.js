@@ -14,17 +14,39 @@ angular.module('vlui')
 
         scope.func = {
           selected: undefined,
-          list: [undefined]
+          list: {
+            aboveFold: [],
+            belowFold: [] // could be empty
+          }
         };
 
-        function getFns(type) {
+        // timeUnits for T
+        var timeUnits = {
+          aboveFold: ["year", "quarter", "month", "date", "day", "hours", "yearmonthdate"],
+          belowFold: ["hoursminutes", "hoursminutesseconds", "milliseconds", 
+          "minutes", "minutesseconds", "quartermonth", "seconds", "secondsmilliseconds", 
+          "yeardate", "yearday", "yearmonth", "yearmonthday", "yearmonthdayhours", 
+          "yearmonthdayhoursminutes", "yearmonthdayhoursminutesseconds", "yearquarter", "yearquartermonth"]
+        }
+
+        // aggregations for Q
+        var aggregations = {
+          aboveFold: ["min", "max", "median", "mean", "sum"],
+          belowFold: ["argmax", "argmin", "average", "distinct",
+            "missing", "modeskew", "q1", "q3", "stdev", "stdevp", "valid", "values", "variance", "variancep"] // there is no "count" for Q
+        }
+
+        function getTimeUnits(type) {
           if (type === 'temporal') {
-            return Schema.schema.definitions.TimeUnit.enum;
+            if (!timeUnits.all || timeUnits.all.length <= 0) {
+              timeUnits.all = timeUnits.aboveFold.concat(timeUnits.belowFold);
+            }
+            return timeUnits.all;
           }
           return [];
         }
 
-        function getAggrs(type) {
+        function getAggregations(type) {
           if(!type) {
             return [COUNT];
           }
@@ -32,7 +54,10 @@ angular.module('vlui')
           // HACK
           // TODO: make this correct for temporal as well
           if (type === 'quantitative' ){
-            return Schema.schema.definitions.AggregateOp.enum;
+            if (!aggregations.all || aggregations.all.length <= 0) {
+              aggregations.all = aggregations.aboveFold.concat(aggregations.belowFold);
+            }
+            return aggregations.all;
           }
           return [];
         }
@@ -55,8 +80,8 @@ angular.module('vlui')
           // reset field def
           // HACK: we're temporarily storing the maxbins in the pill
           pill.bin = selectedFunc === BIN ? true : undefined;
-          pill.aggregate = getAggrs(type).indexOf(selectedFunc) !== -1 ? selectedFunc : undefined;
-          pill.timeUnit = getFns(type).indexOf(selectedFunc) !== -1 ? selectedFunc : undefined;
+          pill.aggregate = getAggregations(type).indexOf(selectedFunc) !== -1 ? selectedFunc : undefined;
+          pill.timeUnit = getTimeUnits(type).indexOf(selectedFunc) !== -1 ? selectedFunc : undefined;
 
           if(!_.isEqual(oldPill, pill)){
             Pills.set(scope.channelId, pill, true /* propagate change */);
@@ -81,14 +106,17 @@ angular.module('vlui')
             isT = type === vl.type.TEMPORAL;
 
           if(pill.field === '*' && pill.aggregate === COUNT){
-            scope.func.list=[COUNT];
+            scope.func.list.aboveFold=[COUNT];
             scope.func.selected = COUNT;
           } else {
-            scope.func.list = ( isOrdinalShelf && (isQ || isT) ? [] : [undefined])
-              .concat(getFns(type))
-              .concat(getAggrs(type).filter(function(x) { return x !== COUNT; }))
+            scope.func.list.aboveFold = ( isOrdinalShelf && (isQ || isT) ? [] : [undefined])
+              .concat( isT ? timeUnits.aboveFold : [] )
+              .concat( isQ ? aggregations.aboveFold : [] )
               // TODO: check supported type based on primitive data?
-              .concat(type === 'quantitative' ? ['bin'] : []);
+              .concat( isQ ? ['bin'] : []);
+
+            scope.func.list.belowFold = [].concat( isT ? timeUnits.belowFold : [])
+              .concat( isQ ? aggregations.belowFold : [] );
 
             var defaultVal = (isOrdinalShelf &&
               (isQ && BIN) || (isT && consts.defaultTimeFn)
@@ -97,7 +125,7 @@ angular.module('vlui')
             var selected = pill.bin ? 'bin' :
               pill.aggregate || pill.timeUnit;
 
-            if (scope.func.list.indexOf(selected) >= 0) {
+            if (scope.func.list.aboveFold.indexOf(selected) >= 0 || scope.func.list.belowFold.indexOf(selected) >= 0) {
               scope.func.selected = selected;
             } else {
               scope.func.selected = defaultVal;

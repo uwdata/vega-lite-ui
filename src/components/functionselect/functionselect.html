@@ -1,7 +1,27 @@
-<div class="mb5" ng-if="func.list.length > 1 || func.list[0] !== undefined">
+<div class="mb5" ng-if="func.list.aboveFold.length > 1 || func.list.aboveFold[0] !== undefined">
   <h4>Functions</h4>
-  <label class="func-label field-func" ng-repeat="f in func.list">
+  <label class="func-label field-func" ng-repeat="f in func.list.aboveFold">
     <input type="radio" ng-value="f" ng-model="func.selected" ng-change="selectChanged()">
-    {{f || '-'}}
+    {{f || 'NONE'}}
   </label>
+
+  <div class="expand-collapse">
+    <a ng-click="showAllFunctions=!showAllFunctions" ng-init="showAllFunctions=false"> 
+      <span ng-show="!showAllFunctions"> more <i class="fa fa-angle-down" aria-hidden="true"></i> </span>
+    </a>
+  </div>
+
+  <label ng-show="showAllFunctions"
+    class="func-label field-func" 
+    ng-repeat="f in func.list.belowFold">
+    <input type="radio" ng-value="f" ng-model="func.selected" ng-change="selectChanged()">
+    {{f || 'NONE'}}
+  </label>
+
+  <div class="expand-collapse">
+    <a ng-click="showAllFunctions=!showAllFunctions"> 
+      <span ng-show="showAllFunctions"> less <i class="fa fa-angle-up" aria-hidden="true"></i> </span>
+    </a>
+  </div>
+
 </div>
