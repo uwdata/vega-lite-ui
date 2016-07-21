@@ -24,8 +24,8 @@ angular.module('vlui')
         var timeUnits = {
           aboveFold: [undefined, "year", "quarter", "month", "date", "day", "hours", "minutes", "seconds", "yearmonthdate"],
           belowFold: ["hoursminutes", "hoursminutesseconds", "milliseconds", 
-            "minutesseconds", "secondsmilliseconds", "yearmonth", "yearmonthday", "yearmonthdayhours", 
-            "yearmonthdayhoursminutes", "yearmonthdayhoursminutesseconds", "yearquarter"]
+            "minutesseconds", "secondsmilliseconds", "yearmonth", "yearmonthdatehours", 
+            "yearmonthdatehoursminutes", "yearmonthdatehoursminutesseconds", "yearquarter"]
         }
 
         // aggregations for Q
