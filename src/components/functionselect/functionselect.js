@@ -22,18 +22,44 @@ angular.module('vlui')
 
         // timeUnits for T
         var timeUnits = {
-          aboveFold: [undefined, "year", "quarter", "month", "date", "day", "hours", "minutes", "seconds", "yearmonthdate"],
-          belowFold: ["hoursminutes", "hoursminutesseconds", "milliseconds", 
-            "minutesseconds", "secondsmilliseconds", "yearmonth", "yearmonthdatehours", 
-            "yearmonthdatehoursminutes", "yearmonthdatehoursminutesseconds", "yearquarter"]
+          aboveFold: [
+            undefined,
+            'year', 'quarter',
+            'month', 'date',
+            'day', 'hours',
+            'minutes', 'seconds',
+            'yearmonthdate'
+          ],
+          belowFold: [
+            'hoursminutes',
+            'hoursminutesseconds',
+            'milliseconds',
+            'minutesseconds',
+            'secondsmilliseconds',
+            'yearmonth',
+            'yearmonthdatehours',
+            'yearmonthdatehoursminutes',
+            'yearmonthdatehoursminutesseconds',
+            'yearquarter'
+          ]
         }
 
         // aggregations for Q
         var aggregations = {
-          aboveFold: [undefined, "min", "max", "median", "mean", "sum"],
-          belowFold: ["average", "distinct",
-            "missing", "modeskew", "q1", "q3", "stdev", "stdevp", "valid", "values", "variance", "variancep"] // there is no "count" for Q
-        }
+          aboveFold: [
+            undefined,
+            'min', 'max',
+            'median', 'mean',
+            'sum' // bin is here
+          ],
+          belowFold: [
+            'missing', 'valid',
+            'distinct', 'modeskew',
+            'q1', 'q3',
+            'stdev', 'stdevp',
+            'variance', 'variancep'
+          ] // there is no 'count' for Q
+        };
 
         function getTimeUnits(type) {
           if (type === 'temporal') {
