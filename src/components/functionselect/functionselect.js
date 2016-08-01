@@ -41,10 +41,11 @@ angular.module('vlui')
             'minutesseconds', 
             'secondsmilliseconds'
           ]
-        }
+        };
+        timeUnits.all = timeUnits.aboveFold.concat(timeUnits.belowFold);
 
-        // aggregations for Q
-        var aggregations = {
+        // aggregates for Q
+        var aggregates = {
           aboveFold: [
             undefined,
             'min', 'max',
@@ -59,18 +60,16 @@ angular.module('vlui')
             'variance', 'variancep'
           ] // there is no 'count' for Q
         };
+        aggregates.all = aggregates.aboveFold.concat(aggregates.belowFold);
 
         function getTimeUnits(type) {
           if (type === 'temporal') {
-            if (!timeUnits.all || timeUnits.all.length <= 0) {
-              timeUnits.all = timeUnits.aboveFold.concat(timeUnits.belowFold);
-            }
             return timeUnits.all;
           }
           return [];
         }
 
-        function getAggregations(type) {
+        function getAggregates(type) {
           if(!type) {
             return [COUNT];
           }
@@ -78,10 +77,7 @@ angular.module('vlui')
           // HACK
           // TODO: make this correct for temporal as well
           if (type === 'quantitative' ){
-            if (!aggregations.all || aggregations.all.length <= 0) {
-              aggregations.all = aggregations.aboveFold.concat(aggregations.belowFold);
-            }
-            return aggregations.all;
+            return aggregates.all;
           }
           return [];
         }
@@ -104,7 +100,7 @@ angular.module('vlui')
           // reset field def
           // HACK: we're temporarily storing the maxbins in the pill
           pill.bin = selectedFunc === BIN ? true : undefined;
-          pill.aggregate = getAggregations(type).indexOf(selectedFunc) !== -1 ? selectedFunc : undefined;
+          pill.aggregate = getAggregates(type).indexOf(selectedFunc) !== -1 ? selectedFunc : undefined;
           pill.timeUnit = getTimeUnits(type).indexOf(selectedFunc) !== -1 ? selectedFunc : undefined;
 
           if(!_.isEqual(oldPill, pill)){
@@ -134,12 +130,12 @@ angular.module('vlui')
             scope.func.selected = COUNT;
           } else {
             scope.func.list.aboveFold = [].concat( isT ? timeUnits.aboveFold : [] )
-              .concat( isQ ? aggregations.aboveFold : [] )
+              .concat( isQ ? aggregates.aboveFold : [] )
               // TODO: check supported type based on primitive data?
               .concat( isQ ? ['bin'] : []);
 
             scope.func.list.belowFold = [].concat( isT ? timeUnits.belowFold : [])
-              .concat( isQ ? aggregations.belowFold : [] );
+              .concat( isQ ? aggregates.belowFold : [] );
 
             var defaultVal = (isOrdinalShelf &&
               (isQ && BIN) || (isT && consts.defaultTimeFn)
