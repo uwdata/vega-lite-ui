@@ -56,14 +56,14 @@ describe('Directive: functionSelect', function() {
     element = angular.element('<function-select field-def="encoding[channel]" channel="channel" pills="pills"></function-select>');
     element = $compile(element)(scope);
     scope.$digest();
-    expect(element.find('input').length).to.eql(21);
+    expect(element.find('input').length).to.eql(17);
   });
 
   it('should have correct number of radio', function() {
     element = angular.element('<function-select  field-def="encoding[channel3]" channel="channel3" pills="pills"></function-select>');
     element = $compile(element)(scope);
     scope.$digest();
-    expect(element.find('input').length).to.eql(25);
+    expect(element.find('input').length).to.eql(20);
   });
 
   it('should not show other options for count field', function() {
