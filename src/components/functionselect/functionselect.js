@@ -18,7 +18,8 @@ angular.module('vlui')
             aboveFold: [],
             belowFold: [] // could be empty
           },
-          isTemporal: false // for making belowFold timeUnits single-column
+          isTemporal: false, // for making belowFold timeUnits single-column
+          isCount: false // hide "more" & "less" toggle for COUNT
         };
 
         // timeUnits for T
@@ -129,8 +130,12 @@ angular.module('vlui')
           // for making belowFold timeUnits single-column
           scope.func.isTemporal = isT; 
 
+          // hide "more" & "less" toggles for COUNT
+          scope.func.isCount = pill.field === '*';
+
           if(pill.field === '*' && pill.aggregate === COUNT){
             scope.func.list.aboveFold=[COUNT];
+            scope.func.list.belowFold=[];
             scope.func.selected = COUNT;
           } else {
             scope.func.list.aboveFold = [].concat( isT ? timeUnits.aboveFold : [] )

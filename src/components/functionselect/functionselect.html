@@ -15,7 +15,8 @@
       {{f}}
   </label>
 
-  <div class="expand-collapse">
+  <div ng-hide="func.isCount"
+    class="expand-collapse">
     <a ng-click="showAllFunctions=!showAllFunctions"> 
       <span ng-show="!showAllFunctions"> more <i class="fa fa-angle-down" aria-hidden="true"></i> </span>
       <span ng-show="showAllFunctions"> less <i class="fa fa-angle-up" aria-hidden="true"></i> </span>
