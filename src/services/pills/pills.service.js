@@ -14,6 +14,7 @@ angular.module('vlui')
       // Event, with handler in the listener
       set: set,
       remove: remove,
+      parse: parse,
       update: update,
       reset: reset,
       dragDrop: dragDrop,
@@ -73,6 +74,18 @@ angular.module('vlui')
         Pills.listener.remove(channelId);
       }
     }
+
+    /**
+     * Re-parse the spec.
+     *
+     * @param {any} spec
+     */
+    function parse(spec) {
+      if (Pills.listener) {
+        Pills.listener.parse(spec);
+      }
+    }
+
     /**
      * Update the whole pill set
      *

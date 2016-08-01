@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('vlui')
-  .directive('vlPlotGroupList', function (vl, cql, jQuery, consts, _, Logger) {
+  .directive('vlPlotGroupList', function (vl, cql, jQuery, consts, _, Logger, Pills) {
     return {
       templateUrl: 'components/vlplotgrouplist/vlplotgrouplist.html',
       restrict: 'E',
@@ -56,8 +56,8 @@ angular.module('vlui')
         }
 
         function select(chart) {
-          // TODO: convert this into logInteraction
-          console.log('Selecting chart', chart);
+          Logger.logInteraction(Logger.actions.SPEC_SELECT, chart);
+          Pills.parse(chart.vlSpec);
         }
       }
     };

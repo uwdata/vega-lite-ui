@@ -64,7 +64,10 @@ angular.module('vlui')
       //POLESTAR
       SPEC_CHANGE: {category:'POLESTAR', id: 'SPEC_CHANGE', level: service.levels.DEBUG},
       FIELD_DROP: {category: 'POLESTAR', id: 'FIELD_DROP', level: service.levels.DEBUG},
-      MARK_CHANGE: {category: 'POLESTAR', id: 'MARK_CHANGE', level: service.levels.DEBUG}
+      MARK_CHANGE: {category: 'POLESTAR', id: 'MARK_CHANGE', level: service.levels.DEBUG},
+
+      // Voyager 2
+      SPEC_SELECT: {category:'VOYAGER2', id: 'SPEC_SELECT', level: service.levels.DEBUG},
     };
 
     service.logInteraction = function(action, label, data) {
