@@ -2,12 +2,12 @@ label.func-label.field-func {
   font-weight: normal;
 }
 
-label.func-label.field-func.aboveFold {
+label.func-label.field-func {
   width: 130px; // set width to roughly half of .shelf-functions to create double columns
 }
 
-label.func-label.field-func.belowFold {
-  display: block;
+label.func-label.field-func.single-column {
+  width: 260px; // set width slightly smaller than .shelf-functions to create single column
 }
 
 label.func-label.field-func.none {

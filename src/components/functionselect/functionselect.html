@@ -9,6 +9,7 @@
 
   <label ng-show="showAllFunctions"
     class="func-label field-func belowFold" 
+    ng-class="{'single-column': func.isTemporal}"
     ng-repeat="f in func.list.belowFold">
     <input type="radio" ng-value="f" ng-model="func.selected" ng-change="selectChanged()">
       {{f}}

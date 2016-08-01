@@ -17,7 +17,8 @@ angular.module('vlui')
           list: {
             aboveFold: [],
             belowFold: [] // could be empty
-          }
+          },
+          isTemporal: false // for making belowFold timeUnits single-column
         };
 
         // timeUnits for T
@@ -124,6 +125,9 @@ angular.module('vlui')
           var isOrdinalShelf = ['row','column','shape'].indexOf(scope.channelId) !== -1,
             isQ = type === vl.type.QUANTITATIVE,
             isT = type === vl.type.TEMPORAL;
+
+          // for making belowFold timeUnits single-column
+          scope.func.isTemporal = isT; 
 
           if(pill.field === '*' && pill.aggregate === COUNT){
             scope.func.list.aboveFold=[COUNT];
