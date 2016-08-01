@@ -24,23 +24,22 @@ angular.module('vlui')
         var timeUnits = {
           aboveFold: [
             undefined,
-            'year', 'quarter',
-            'month', 'date',
-            'day', 'hours',
-            'minutes', 'seconds',
-            'yearmonthdate'
+            'yearmonthdate', 'year', 
+            'quarter', 'month', 
+            'date','day', 
+            'hours', 'minutes', 
+            'seconds', 'milliseconds'
           ],
           belowFold: [
-            'hoursminutes',
-            'hoursminutesseconds',
-            'milliseconds',
-            'minutesseconds',
-            'secondsmilliseconds',
+            'yearquarter',
             'yearmonth',
             'yearmonthdatehours',
             'yearmonthdatehoursminutes',
             'yearmonthdatehoursminutesseconds',
-            'yearquarter'
+            'hoursminutes',
+            'hoursminutesseconds',
+            'minutesseconds', 
+            'secondsmilliseconds'
           ]
         }
 
