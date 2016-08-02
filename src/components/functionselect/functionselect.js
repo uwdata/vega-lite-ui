@@ -60,9 +60,10 @@ angular.module('vlui')
             'q1', 'q3',
             'stdev', 'stdevp',
             'variance', 'variancep'
-          ] // there is no 'count' for Q
+          ] // hide COUNT for Q in the UI because we dedicate it to a special "# Count" field
         };
-        aggregates.all = aggregates.aboveFold.concat(aggregates.belowFold);
+        aggregates.all = aggregates.aboveFold.concat(aggregates.belowFold)
+          .concat([COUNT]); // COUNT is a valid aggregate
 
         function getTimeUnits(type) {
           if (type === 'temporal') {
