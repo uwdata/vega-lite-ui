@@ -1,20 +1,23 @@
 <div class="mb5" ng-if="func.list.aboveFold.length > 1 || func.list.aboveFold[0] !== undefined">
   <h4>Functions</h4>
-  <label class="func-label field-func aboveFold" 
+  <!-- Above the fold functions -->
+  <label class="func-label field-func" 
     ng-repeat="f in func.list.aboveFold"
     ng-class="{none: !f}">
     <input type="radio" ng-value="f" ng-model="func.selected" ng-change="selectChanged()">
       {{f || 'NONE'}}
   </label>
 
+  <!-- Below the fold functions -->
   <label ng-show="showAllFunctions"
-    class="func-label field-func belowFold" 
+    class="func-label field-func" 
     ng-class="{'single-column': func.isTemporal}"
     ng-repeat="f in func.list.belowFold">
     <input type="radio" ng-value="f" ng-model="func.selected" ng-change="selectChanged()">
       {{f}}
   </label>
 
+  <!-- more and less toggles -->
   <div ng-hide="func.isCount"
     class="expand-collapse">
     <a ng-click="showAllFunctions=!showAllFunctions"> 
@@ -22,5 +25,4 @@
       <span ng-show="showAllFunctions"> less <i class="fa fa-angle-up" aria-hidden="true"></i> </span>
     </a>
   </div>
-
 </div>
