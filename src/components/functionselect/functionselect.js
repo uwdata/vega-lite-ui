@@ -73,10 +73,6 @@ angular.module('vlui')
         }
 
         function getAggregates(type) {
-          if(!type) {
-            return [COUNT];
-          }
-
           // HACK
           // TODO: make this correct for temporal as well
           if (type === 'quantitative' ){
