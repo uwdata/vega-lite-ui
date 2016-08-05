@@ -7,16 +7,23 @@
  * # fieldInfo
  */
 angular.module('vlui')
-  .directive('quantitativeFitler', function () {
+  .directive('quantitativeFilter', function (Dataset) {
     return {
       templateUrl: 'components/filter/quantitativefilter.html',
       restrict: 'E',
-      replace: true,
+      replace: false,
       scope: {
-        fieldDef: '='
+        field: '=',
+        filter: '='
       },
       link: function(scope, element) {
-
+        scope.domainMin = 0;
+        scope.domainMax = 100;
+        scope.$watch('field', function(field) {
+          var domain = Dataset.domain(field);
+          scope.domainMin = domain[0];
+          scope.domainMax = domain[1];
+        });
       }
     };
   });

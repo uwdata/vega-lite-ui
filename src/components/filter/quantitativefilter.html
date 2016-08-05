@@ -1,3 +1,10 @@
 <div>
-  {{field}} (Q)
+  <div>
+    <span class="right">{{domainMax}}</span>
+    <span>{{domainMin}}</span>
+  </div>
+  <div range-slider min="domainMin"" max="domainMax" model-min="filter.range[0]" model-max="filter.range[1]">
+  </div>
 </div>
+
+

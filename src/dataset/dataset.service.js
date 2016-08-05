@@ -106,12 +106,18 @@ angular.module('vlui')
 
     // TODO: remove
     Dataset.domain = function(field) {
+      var type = Dataset.schema.type(field);
       var stats = Dataset.schema.stats({field: field});
-      return util.keys(stats.unique)
-        .map(function(x) {
-          if (+x === +x) { return +x; }
-          return x;
-        }).sort();
+      if (type === vl.type.QUANTITATIVE) {
+        return [stats.min, stats.max];
+      } else {
+        return util.keys(stats.unique)
+          .map(function(x) {
+            if (+x === +x) { return +x; }
+            return x;
+          }).sort();
+      }
+
     };
 
     function updateFromData(dataset, data) {

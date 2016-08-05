@@ -39,7 +39,6 @@ angular.module('vlui')
         return filters;
       }, []);
 
-      console.log('Update filter', JSON.stringify(vlFilter, null, 2));
       return vlFilter.length ? vlFilter : undefined;
     }
 
