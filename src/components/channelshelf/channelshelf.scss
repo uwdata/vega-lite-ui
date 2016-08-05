@@ -11,6 +11,15 @@ $text-color: #212121;
   font-size: 11px;
 }
 
+.shelf.disabled {
+  opacity: 0.5;
+}
+
+/** Don't disable shelf in preview mode */
+.preview .shelf.disabled {
+  opacity: 1;
+}
+
 .shelf{
   border-radius: $pill-radius;
   background-color: hsla(224,25%,29%,0.2);
@@ -22,9 +31,7 @@ $text-color: #212121;
     background-color: hsla(185,80%,29%,0.4);
   }
 
-  &.disabled {
-    opacity: 0.5;
-  }
+
 
   .shelf-label {
     @extend .noselect;
