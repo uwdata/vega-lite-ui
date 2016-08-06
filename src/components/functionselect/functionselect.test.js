@@ -63,7 +63,7 @@ describe('Directive: functionSelect', function() {
     element = angular.element('<function-select  field-def="encoding[channel3]" channel="channel3" pills="pills"></function-select>');
     element = $compile(element)(scope);
     scope.$digest();
-    expect(element.find('input').length).to.eql(25);
+    expect(element.find('input').length).to.eql(22);
   });
 
   it('should not show other options for count field', function() {
