@@ -113,6 +113,8 @@ angular.module('vlui')
       } else {
         return util.keys(stats.unique)
           .map(function(x) {
+            // Coerce number to become number if they are number,
+            // Otherwise return string.
             if (+x === +x) { return +x; }
             return x;
           }).sort();
