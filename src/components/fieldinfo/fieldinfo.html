@@ -35,6 +35,7 @@
       </a>
     </span>
 
+    <!-- Hide Filter for count field since we don't have post-aggregation filter yet--> 
     <span ng-if="fieldDef.aggregate!=='count'"
       class="no-shrink filter" ng-show="showFilter">
       <a class="filter-field" ng-click="filterAction()">
