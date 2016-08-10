@@ -23,8 +23,8 @@ angular.module('vlui')
         };
       }
 
-      var specM = cql.modelGroup.isSpecQueryModelGroup(item) ?
-        cql.modelGroup.getTopItem(item) :
+      var specM = (item instanceof cql.model.SpecQueryModelGroup) ?
+        cql.model.SpecQueryModelGroup.getTopSpecQueryModel(item) :
         item;
       return {
         enumSpecIndex: specM.enumSpecIndex,
