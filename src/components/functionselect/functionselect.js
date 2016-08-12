@@ -51,7 +51,7 @@ angular.module('vlui')
           aboveFold: [
             undefined,
             'min', 'max',
-            'median', 'mean',
+            'average', 'median', 
             'sum' // bin is here
           ],
           belowFold: [
