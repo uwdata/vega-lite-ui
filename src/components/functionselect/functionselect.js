@@ -25,12 +25,12 @@ angular.module('vlui')
         // timeUnits for T
         var timeUnits = {
           aboveFold: [
-            undefined,
-            'yearmonthdate', 'year', 
+            undefined, 'year', 
             'quarter', 'month', 
             'date','day', 
             'hours', 'minutes', 
-            'seconds', 'milliseconds'
+            'seconds', 'milliseconds',
+            'yearmonthdate'
           ],
           belowFold: [
             'yearquarter',
@@ -52,14 +52,14 @@ angular.module('vlui')
             undefined, // bin is here
             'min', 'max',
             'average', 'median', 
-            'sum', 'stdev'
+            'sum'
           ],
           belowFold: [
-            'variance', 'variancep',
-            'stdevp', 'modeskew',
-            'q1', 'q3',
             'valid', 'missing', 
-            'distinct'
+            'distinct', 'modeskew',
+            'q1', 'q3',
+            'stdev', 'stdevp', 
+            'variance', 'variancep'
           ] // hide COUNT for Q in the UI because we dedicate it to a special "# Count" field
         };
         aggregates.all = aggregates.aboveFold.concat(aggregates.belowFold)
