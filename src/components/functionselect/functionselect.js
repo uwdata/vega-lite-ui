@@ -142,7 +142,7 @@ angular.module('vlui')
             }
             else if (isQ) {
               scope.func.list.aboveFold = aggregates.aboveFold;
-              scope.func.list.aboveFold.splice(1, 0, 'bin');
+              scope.func.list.aboveFold.splice(1, 0, 'bin'); // support 'bin' for quantitative fields
               scope.func.list.belowFold = aggregates.belowFold;
             }
 
