@@ -49,17 +49,17 @@ angular.module('vlui')
         // aggregates for Q
         var aggregates = {
           aboveFold: [
-            undefined,
+            undefined, // bin is here
             'min', 'max',
             'average', 'median', 
-            'sum' // bin is here
+            'sum', 'stdev'
           ],
           belowFold: [
-            'missing', 'valid',
-            'distinct', 'modeskew',
+            'variance', 'variancep',
+            'stdevp', 'modeskew',
             'q1', 'q3',
-            'stdev', 'stdevp',
-            'variance', 'variancep'
+            'valid', 'missing', 
+            'distinct'
           ] // hide COUNT for Q in the UI because we dedicate it to a special "# Count" field
         };
         aggregates.all = aggregates.aboveFold.concat(aggregates.belowFold)
@@ -135,13 +135,16 @@ angular.module('vlui')
             scope.func.list.belowFold=[];
             scope.func.selected = COUNT;
           } else {
-            scope.func.list.aboveFold = [].concat( isT ? timeUnits.aboveFold : [] )
-              .concat( isQ ? aggregates.aboveFold : [] )
-              // TODO: check supported type based on primitive data?
-              .concat( isQ ? ['bin'] : []);
-
-            scope.func.list.belowFold = [].concat( isT ? timeUnits.belowFold : [])
-              .concat( isQ ? aggregates.belowFold : [] );
+            // TODO: check supported type based on primitive data?
+            if (isT) {
+              scope.func.list.aboveFold = timeUnits.aboveFold;
+              scope.func.list.belowFold = timeUnits.belowFold;
+            }
+            else if (isQ) {
+              scope.func.list.aboveFold = aggregates.aboveFold;
+              scope.func.list.aboveFold.splice(1, 0, 'bin');
+              scope.func.list.belowFold = aggregates.belowFold;
+            }
 
             var defaultVal = (isOrdinalShelf &&
               (isQ && BIN) || (isT && consts.defaultTimeFn)
