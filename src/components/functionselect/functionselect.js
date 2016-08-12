@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('vlui')
-  .directive('functionSelect', function(_, consts, vl, Pills, Logger, Schema) {
+  .directive('functionSelect', function(_, consts, vl, Pills, Logger) {
     return {
       templateUrl: 'components/functionselect/functionselect.html',
       restrict: 'E',
