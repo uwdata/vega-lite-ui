@@ -22,8 +22,8 @@ angular.module('vlui')
           isCount: false // hide "more" & "less" toggle for COUNT
         };
 
-        // timeUnits for T
-        var timeUnits = {
+        // functions for T = timeUnits + undefined
+        var temporalFunctions = {
           aboveFold: [
             undefined, 'year', 
             'quarter', 'month', 
@@ -44,12 +44,15 @@ angular.module('vlui')
             'secondsmilliseconds'
           ]
         };
-        timeUnits.all = timeUnits.aboveFold.concat(timeUnits.belowFold);
 
-        // aggregates for Q
-        var aggregates = {
+        // timeUnits = T functions - undefined
+        var timeUnits = _.pull(_.concat(temporalFunctions.aboveFold, temporalFunctions.belowFold)
+          , undefined);
+
+        // functions for Q = aggregates + BIN + undefined - COUNT
+        var quantitativeFunctions = {
           aboveFold: [
-            undefined, // bin is here
+            undefined, 'bin',
             'min', 'max',
             'average', 'median', 
             'sum'
@@ -62,24 +65,10 @@ angular.module('vlui')
             'variance', 'variancep'
           ] // hide COUNT for Q in the UI because we dedicate it to a special "# Count" field
         };
-        aggregates.all = aggregates.aboveFold.concat(aggregates.belowFold)
-          .concat([COUNT]); // COUNT is a valid aggregate
 
-        function getTimeUnits(type) {
-          if (type === 'temporal') {
-            return timeUnits.all;
-          }
-          return [];
-        }
-
-        function getAggregates(type) {
-          // HACK
-          // TODO: make this correct for temporal as well
-          if (type === 'quantitative' ){
-            return aggregates.all;
-          }
-          return [];
-        }
+        // aggregates = Q Functions + COUNT - BIN - undefined
+        var aggregates = _.pull(_.concat(quantitativeFunctions.aboveFold, quantitativeFunctions.belowFold, [COUNT]), 
+          BIN, undefined);
 
         scope.selectChanged = function() {
           Logger.logInteraction(Logger.actions.FUNC_CHANGE, scope.func.selected);
@@ -90,7 +79,9 @@ angular.module('vlui')
         scope.$watch('func.selected', function(selectedFunc) {
           var oldPill = Pills.get(scope.channelId),
             pill = _.clone(oldPill),
-            type = pill ? pill.type : '';
+            type = pill ? pill.type : '',
+            isQ = type === vl.type.QUANTITATIVE,
+            isT = type === vl.type.TEMPORAL;
 
           if(!pill){
             return; // not ready
@@ -99,8 +90,8 @@ angular.module('vlui')
           // reset field def
           // HACK: we're temporarily storing the maxbins in the pill
           pill.bin = selectedFunc === BIN ? true : undefined;
-          pill.aggregate = getAggregates(type).indexOf(selectedFunc) !== -1 ? selectedFunc : undefined;
-          pill.timeUnit = getTimeUnits(type).indexOf(selectedFunc) !== -1 ? selectedFunc : undefined;
+          pill.aggregate = (isQ && aggregates.indexOf(selectedFunc) !== -1) ? selectedFunc : undefined;
+          pill.timeUnit = (isT && timeUnits.indexOf(selectedFunc) !== -1) ? selectedFunc : undefined;
 
           if(!_.isEqual(oldPill, pill)){
             Pills.set(scope.channelId, pill, true /* propagate change */);
@@ -137,14 +128,12 @@ angular.module('vlui')
           } else {
             // TODO: check supported type based on primitive data?
             if (isT) {
-              scope.func.list.aboveFold = timeUnits.aboveFold;
-              scope.func.list.belowFold = timeUnits.belowFold;
+              scope.func.list.aboveFold = temporalFunctions.aboveFold;
+              scope.func.list.belowFold = temporalFunctions.belowFold;
             }
             else if (isQ) {
-              scope.func.list.aboveFold = aggregates.aboveFold;
-              // HACK
-              scope.func.list.aboveFold.splice(1, 0, 'bin'); // support 'bin' for quantitative fields
-              scope.func.list.belowFold = aggregates.belowFold;
+              scope.func.list.aboveFold = quantitativeFunctions.aboveFold;
+              scope.func.list.belowFold = quantitativeFunctions.belowFold;
             }
 
             var defaultVal = (isOrdinalShelf &&
@@ -159,7 +148,6 @@ angular.module('vlui')
             } else {
               scope.func.selected = defaultVal;
             }
-
           }
         }, true);
       }
