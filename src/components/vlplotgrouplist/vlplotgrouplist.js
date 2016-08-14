@@ -51,7 +51,7 @@ angular.module('vlui')
         }
 
         function select(chart) {
-          Logger.logInteraction(Logger.actions.SPEC_SELECT, chart);
+          Logger.logInteraction(Logger.actions.SPEC_SELECT, chart.shorthand);
           Pills.parse(chart.vlSpec);
           if (scope.postSelectAction) {
             scope.postSelectAction();

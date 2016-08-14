@@ -7,7 +7,7 @@
  * # schemaListItem
  */
 angular.module('vlui')
-  .directive('schemaListItem', function (Pills, cql) {
+  .directive('schemaListItem', function (Pills, cql, Logger) {
     return {
       templateUrl: 'components/schemalist/schemalistitem.html',
       restrict: 'E',
@@ -21,6 +21,9 @@ angular.module('vlui')
 
         scope.fieldAdd = function(fieldDef) {
           Pills.add(fieldDef);
+          Logger.logInteraction(Logger.actions.ADD_FIELD, fieldDef, {
+            pills: Pills.pills
+          });
         };
 
         scope.fieldDragStart = function() {

@@ -28,6 +28,7 @@ angular.module('vlui', [
     debug: true,
     useUrl: true,
     logging: true,
+    logLevel: 'INFO',
     defaultConfigSet: 'large',
     appId: 'vlui',
     // embedded polestar and voyager with known data

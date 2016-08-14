@@ -83,6 +83,9 @@ angular.module('vlui')
 
           hoverPromise = $timeout(function() {
             (scope.highlighted||{})[fieldDef.field] = true;
+            Logger.logInteraction(Logger.actions.FIELDDEF_HIGHLIGHTED, scope.chart.shorthand, {
+              highlightedField: fieldDef.field
+            });
 
             if (scope.enablePillsPreview) {
               Pills.preview(scope.chart.vlSpec);
@@ -101,12 +104,14 @@ angular.module('vlui')
 
           if ((scope.highlighted||{})[fieldDef.field]) {
             // disable preview if it's enabled
+            Logger.logInteraction(Logger.actions.FIELDDEF_UNHIGHLIGHTED, scope.chart.shorthand, {
+              highlightedField: fieldDef.field
+            });
 
             (scope.highlighted||{})[fieldDef.field] = false;
             if (scope.enablePillsPreview) {
               Pills.preview(null);
             }
-
           }
         };
 
