@@ -40,5 +40,8 @@
     "lodash": "~4.5.1",
     "vega-lite": "1.1.4",
     "selectize": "~0.12.1"
+  },
+  "resolutions": {
+    "angular": "~1.5.7"
   }
 }
