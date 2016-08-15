@@ -31,6 +31,7 @@
     "angular-sanitize": "~1.5.7",
     "angular-sortable-view": "^0.0.15",
     "angular-touch": "~1.5.7",
+    "angular-websql": "~1.0.2",
     "angular-zeroclipboard": "~0.8.0",
     "compassql": "~0.5.0",
     "drop": "~1.4.2",
