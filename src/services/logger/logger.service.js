@@ -175,7 +175,7 @@ angular.module('vlui')
         if (consts.logToWebSql) {
           var row = {
             userid: userid,
-            time: new Date(),
+            time: new Date().toISOString(),
             actionCategory: action.category,
             actionId: action.id,
             label: _.isObject(label) ? JSON.stringify(label) : label,
