@@ -93,7 +93,7 @@ angular.module('vlui')
     }
 
     // get user id once in the beginning
-    var user = $location.search().user;
+    var userid = service.userid = $location.search().userid;
 
     service.db = $webSql.openDatabase('logs', '1.0', 'Logs', 2 * 1024 * 1024);
 
@@ -174,7 +174,7 @@ angular.module('vlui')
 
         if (consts.logToWebSql) {
           var row = {
-            userid: user,
+            userid: userid,
             time: new Date(),
             actionCategory: action.category,
             actionId: action.id,
