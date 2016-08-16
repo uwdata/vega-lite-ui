@@ -158,7 +158,7 @@ angular.module('vlui')
         element.attr({
           href: csvUrl,
           target: '_blank',
-          download: service.tableName + '.csv'
+          download: service.tableName + '_' + userid + '_' + new Date().toISOString() + '.csv'
         })[0].click();
       });
     };
