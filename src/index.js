@@ -16,6 +16,7 @@ angular.module('vlui', [
   .constant('util', window.vg.util)
   // other libraries
   .constant('jQuery', window.$)
+  .constant('Papa', window.Papa)
   .constant('Blob', window.Blob)
   .constant('URL', window.URL)
   .constant('Drop', window.Drop)

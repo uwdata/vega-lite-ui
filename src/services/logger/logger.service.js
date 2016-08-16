@@ -8,7 +8,7 @@
  * Service in the vega-lite-ui.
  */
 angular.module('vlui')
-  .service('Logger', function ($location, $window, $webSql, _, consts, Analytics, Blob, URL) {
+  .service('Logger', function ($location, $window, $webSql, _, consts, Analytics, Papa, Blob, URL) {
 
     var service = {};
 
@@ -143,14 +143,22 @@ angular.module('vlui')
           return;
         }
 
-        var jsonData = new Blob([JSON.stringify(results.rows)], {type: 'application/json'});
-        var jsonUrl = URL.createObjectURL(jsonData);
+        var rows = [];
+
+        for(var i=0; i < results.rows.length; i++) {
+          rows.push(results.rows.item(i));
+        }
+
+        var csv = Papa.unparse(rows);
+
+        var csvData = new Blob([csv], { type: 'text/csv' });
+        var csvUrl = URL.createObjectURL(csvData);
 
         var element = angular.element('<a/>');
         element.attr({
-          href: jsonUrl,
+          href: csvUrl,
           target: '_blank',
-          download: service.tableName + '.json'
+          download: service.tableName + '.csv'
         })[0].click();
       });
     };
