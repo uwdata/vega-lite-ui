@@ -45,13 +45,13 @@ angular.module('vlui')
           ]
         };
 
-        function cardinalityFilter(timeUnit) {
+        scope.cardinalityFilter = function(timeUnit) {
           // Convert 'any' channel to '?'.
           var channel = Pills.isAnyChannel(scope.channelId) ? '?' : scope.channelId;
           return !timeUnit || // Don't filter undefined.
             // Remove timeUnits that have cardinality <= 1.
             Dataset.schema.cardinality({field: Pills.get(scope.channelId).field, channel: channel, timeUnit: timeUnit}, false, true) > 1;
-        }
+        };
 
         // timeUnits = T functions - undefined
         var timeUnits = _.pull(_.concat(temporalFunctions.aboveFold, temporalFunctions.belowFold), undefined);
@@ -133,8 +133,8 @@ angular.module('vlui')
           } else {
             // TODO: check supported type based on primitive data?
             if (isT) {
-              scope.func.list.aboveFold = temporalFunctions.aboveFold.filter(cardinalityFilter);
-              scope.func.list.belowFold = temporalFunctions.belowFold.filter(cardinalityFilter);
+              scope.func.list.aboveFold = temporalFunctions.aboveFold.filter(scope.cardinalityFilter);
+              scope.func.list.belowFold = temporalFunctions.belowFold.filter(scope.cardinalityFilter);
             }
             else if (isQ) {
               scope.func.list.aboveFold = quantitativeFunctions.aboveFold;
