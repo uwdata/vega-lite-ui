@@ -6,3 +6,16 @@
   bottom: initial;
   padding-bottom: 0;
 }
+
+select.markselect {
+  // customizing css for select box http://cssdeck.com/labs/styling-select-box-with-css3
+  background: #f8f8f8;
+  color:#333;
+  border: #888888 1px solid;
+  display: inline-block;
+  &.auto {
+    background: #e3f9fd;
+    color: #5798a5;
+    border: #9bc4cc 1px solid;
+  }
+}

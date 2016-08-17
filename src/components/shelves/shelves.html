@@ -35,6 +35,7 @@
   <div class="shelf-pane shelf-marks-pane full-width">
     <div class="right">
       <select class="markselect" ng-model="spec.mark"
+              ng-class="{auto: spec.mark === ANY}"
               ng-options="(type === ANY ? 'auto' : type) for type in (supportAny ? marksWithAny : marks)"
               ng-change="markChange()"></select>
     </div>
