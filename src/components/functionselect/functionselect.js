@@ -128,8 +128,8 @@ angular.module('vlui')
               // Convert 'any' channel to '?'.
               var channel = Pills.isAnyChannel(scope.channelId) ? '?' : scope.channelId;
               return !timeUnit || // Don't filter undefined.
-                // Remove timeUnits that have cardinality <= 1. 
-                Dataset.schema.cardinality({field: pill.field, channel: channel, timeUnit: timeUnit}, true, true) > 1;
+                // Remove timeUnits that have cardinality <= 1.
+                Dataset.schema.cardinality({field: pill.field, channel: channel, timeUnit: timeUnit}, false, true) > 1;
             }
             if (isT) {
               scope.func.list.aboveFold = temporalFunctions.aboveFold.filter(cardinalityFilter);
