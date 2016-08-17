@@ -126,7 +126,7 @@ angular.module('vlui')
             // TODO: check supported type based on primitive data?
             function cardinalityFilter(timeUnit) {
               // don't filter undefined. Remove timeUnits that have cardinality <= 1
-              return !timeUnit ? true : Dataset.schema.cardinality({field: pill.field, channel: 'x', timeUnit: timeUnit}) > 1;
+              return !timeUnit ? true : Dataset.schema.cardinality({field: pill.field, channel: 'x', timeUnit: timeUnit}, true, true) > 1;
             }
             if (isT) {
               scope.func.list.aboveFold = temporalFunctions.aboveFold.filter(cardinalityFilter);
