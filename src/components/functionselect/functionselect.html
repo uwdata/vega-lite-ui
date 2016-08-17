@@ -11,9 +11,8 @@
   </div>
   
   <!-- Below the fold functions -->
-  <div>
-    <label ng-show="showAllFunctions"
-      class="func-label field-func" 
+  <div ng-show="showAllFunctions">
+    <label class="func-label field-func"
       ng-class="{'single-column': func.isTemporal}"
       ng-repeat="f in func.list.belowFold">
       <input type="radio" ng-value="f" ng-model="func.selected" ng-change="selectChanged()">

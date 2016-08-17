@@ -10,7 +10,8 @@ angular.module('vlui')
         channelId: '=',
         encoding: '=',
         mark: '=',
-        preview: '='
+        preview: '=',
+        disabled: '='
       },
       link: function(scope, element /*, attrs*/) {
         var propsPopup, funcsPopup;

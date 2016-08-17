@@ -71,11 +71,9 @@ angular.module('vlui')
 
         scope.selectChanged = function() {
           Logger.logInteraction(Logger.actions.FUNC_CHANGE, scope.func.selected);
-        };
 
-        // FIXME func.selected logic should be all moved to selectChanged
-        // when the function select is updated, propagates change the parent
-        scope.$watch('func.selected', function(selectedFunc) {
+          var selectedFunc = scope.func.selected;
+
           var oldPill = Pills.get(scope.channelId),
             pill = _.clone(oldPill),
             type = pill ? pill.type : '',
@@ -95,7 +93,7 @@ angular.module('vlui')
           if(!_.isEqual(oldPill, pill)){
             Pills.set(scope.channelId, pill, true /* propagate change */);
           }
-        });
+        };
 
         // when parent objects modify the field
         scope.$watch('fieldDef', function(pill) {
