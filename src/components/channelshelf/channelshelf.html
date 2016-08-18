@@ -16,7 +16,9 @@
         ng-class="{
           expanded: funcsExpanded,
           any: isAnyField,
-          highlighted: (highlighted||{})[encoding[channelId].field]
+          'enumerated-field': isEnumeratedField,
+          'enumerated-channel': isEnumeratedChannel,
+          highlighted: isHighlighted(channelId)
         }"
         field-def="encoding[channelId]"
         show-type="true"
@@ -26,7 +28,6 @@
         show-remove="true"
         remove-action="removeField()"
         class="selected draggable full-width"
-
         data-drag="true"
         ng-model="pills[channelId]"
         jqyoui-draggable="{onStart: 'fieldDragStart', onStop:'fieldDragStop'}"

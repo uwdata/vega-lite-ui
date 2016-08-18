@@ -7,6 +7,8 @@ angular.module('vlui')
       isAnyChannel: isAnyChannel,
       getNextAnyChannelId: getNextAnyChannelId,
       getEmptyAnyChannelId: getEmptyAnyChannelId,
+      isEnumeratedChannel: isEnumeratedChannel,
+      isEnumeratedField: isEnumeratedField,
 
       get: get,
       // Event
@@ -107,6 +109,20 @@ angular.module('vlui')
       if (Pills.listener && Pills.listener.add) {
         Pills.listener.add(fieldDef);
       }
+    }
+
+    function isEnumeratedChannel(channelId) {
+      if (Pills.listener && Pills.listener.isEnumeratedChannel) {
+        return Pills.listener.isEnumeratedChannel(channelId, Pills.pills[channelId]);
+      }
+      return false;
+    }
+
+    function isEnumeratedField(channelId) {
+      if (Pills.listener && Pills.listener.isEnumeratedField) {
+        return Pills.listener.isEnumeratedField(channelId, Pills.pills[channelId]);
+      }
+      return false;
     }
 
     function remove(channelId) {

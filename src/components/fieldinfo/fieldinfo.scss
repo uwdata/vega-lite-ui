@@ -141,9 +141,20 @@ $any-hover-color: #666;
   font-weight: 500;
 }
 
-.field-info.any, .field-info.any.selected, .field-info.any.unselected, .field-info.any.pill {
-  background-color: #d8fafb;
-  opacity: 0.8;
+.field-info, .field-info.selected, .field-info.unselected, .field-info.pill {
+  &.any {
+    background-color: rgb(216,250,251);
+    opacity: 0.8;
+  }
+  &.enumerated-field {
+    background-color: rgba(216,250,251,0.7);
+    opacity: 0.8;
+  }
+
+  &.enumerated-channel {
+    border: 1px dashed hsla(185,80%,29%,0.2);
+    opacity: 0.8;
+  }
 }
 
 .field-info.pill {
@@ -156,6 +167,9 @@ $any-hover-color: #666;
 }
 
 .field-info.highlighted,
+.field-info.highlighted.any,
+.field-info.highlighted.enumerated-field,
+.field-info.highlighted.enumerated-channel,
 .field-list-item:hover .field-info {
   border-style: solid;
   background-color: #c6e5ff;

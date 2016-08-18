@@ -78,11 +78,21 @@ angular.module('vlui')
 
         var hoverPromise = null;
 
-        scope.fieldInfoMouseover = function(fieldDef) {
+        scope.fieldInfoMouseover = function(fieldDef, index) {
           scope.hovered = true;
 
           hoverPromise = $timeout(function() {
             (scope.highlighted||{})[fieldDef.field] = true;
+
+            // Link to original field in the CQL-based spec
+            if (scope.chart.enumSpecIndex) {
+              var enumSpecIndex = scope.chart.enumSpecIndex;
+              if (enumSpecIndex.encodings && enumSpecIndex.encodings[index] && enumSpecIndex.encodings[index].field) {
+                var fieldEnumSpecName = enumSpecIndex.encodings[index].field.name;
+                (scope.highlighted||{})[fieldEnumSpecName] = true;
+              }
+            }
+
             Logger.logInteraction(Logger.actions.FIELDDEF_HIGHLIGHTED, scope.chart.shorthand, {
               highlightedField: fieldDef.field
             });
@@ -93,7 +103,7 @@ angular.module('vlui')
           }, 500);
         };
 
-        scope.fieldInfoMouseout = function(fieldDef) {
+        scope.fieldInfoMouseout = function(fieldDef, index) {
           scope.hovered = false;
 
           if (hoverPromise) {
@@ -109,16 +119,35 @@ angular.module('vlui')
             });
 
             (scope.highlighted||{})[fieldDef.field] = false;
+
+            // Unlink Link to original field in the CQL-based spec
+            if (scope.chart.enumSpecIndex) {
+              var enumSpecIndex = scope.chart.enumSpecIndex;
+              if (enumSpecIndex.encodings && enumSpecIndex.encodings[index] && enumSpecIndex.encodings[index].field) {
+                var fieldEnumSpecName = enumSpecIndex.encodings[index].field.name;
+                delete (scope.highlighted||{})[fieldEnumSpecName];
+              }
+            }
+
             if (scope.enablePillsPreview) {
               Pills.preview(null);
             }
           }
         };
 
-        scope.isFieldAny = function(chart, index) {
+        scope.isEnumeratedField = function(chart, index) {
           if (chart.enumSpecIndex) {
-            if (chart.enumSpecIndex.encodings && chart.enumSpecIndex.encodings[index] && chart.enumSpecIndex.encodings[index].field) {
-              return true;
+            if (chart.enumSpecIndex.encodings && chart.enumSpecIndex.encodings[index]) {
+              return chart.enumSpecIndex.encodings[index].field;
+            }
+          }
+          return false;
+        };
+
+        scope.isEnumeratedChannel = function(chart, index) {
+          if (chart.enumSpecIndex) {
+            if (chart.enumSpecIndex.encodings && chart.enumSpecIndex.encodings[index]) {
+              return chart.enumSpecIndex.encodings[index].channel;
             }
           }
           return false;
