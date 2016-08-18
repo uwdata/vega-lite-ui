@@ -2,14 +2,14 @@
   <h4>Function</h4>
   <!-- Above the fold functions -->
   <div>
-    <label class="func-label field-func" 
+    <label class="func-label field-func"
       ng-repeat="f in func.list.aboveFold"
       ng-class="{none: !f}">
       <input type="radio" ng-value="f" ng-model="func.selected" ng-change="selectChanged()">
       {{f || 'NONE'}}
     </label>
   </div>
-  
+
   <!-- Below the fold functions -->
   <div ng-show="showAllFunctions">
     <label class="func-label field-func"
@@ -19,11 +19,11 @@
       {{f}}
     </label>
   </div>
-  
+
   <!-- more and less toggles -->
-  <div ng-hide="func.isCount"
+  <div ng-hide="func.isCount || func.list.belowFold.length == 0"
     class="expand-collapse">
-    <a ng-click="showAllFunctions=!showAllFunctions"> 
+    <a ng-click="showAllFunctions=!showAllFunctions">
       <span ng-show="!showAllFunctions"> more <i class="fa fa-angle-down" aria-hidden="true"></i> </span>
       <span ng-show="showAllFunctions"> less <i class="fa fa-angle-up" aria-hidden="true"></i> </span>
     </a>
