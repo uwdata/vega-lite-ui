@@ -45,7 +45,7 @@ angular.module('vlui')
           ]
         };
 
-        scope.cardinalityFilter = function(timeUnit) {
+        var cardinalityFilter = function(timeUnit) {
           var field = Pills.get(scope.channelId).field;
           // Convert 'any' channel to '?'.
           var channel = Pills.isAnyChannel(scope.channelId) ? '?' : scope.channelId;
@@ -134,8 +134,8 @@ angular.module('vlui')
           } else {
             // TODO: check supported type based on primitive data?
             if (isT) {
-              scope.func.list.aboveFold = temporalFunctions.aboveFold.filter(scope.cardinalityFilter);
-              scope.func.list.belowFold = temporalFunctions.belowFold.filter(scope.cardinalityFilter);
+              scope.func.list.aboveFold = temporalFunctions.aboveFold.filter(cardinalityFilter);
+              scope.func.list.belowFold = temporalFunctions.belowFold.filter(cardinalityFilter);
             }
             else if (isQ) {
               scope.func.list.aboveFold = quantitativeFunctions.aboveFold;
