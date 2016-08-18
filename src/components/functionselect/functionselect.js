@@ -46,11 +46,12 @@ angular.module('vlui')
         };
 
         scope.cardinalityFilter = function(timeUnit) {
+          var field = Pills.get(scope.channelId).field;
           // Convert 'any' channel to '?'.
           var channel = Pills.isAnyChannel(scope.channelId) ? '?' : scope.channelId;
           return !timeUnit || // Don't filter undefined.
-            // Remove timeUnits that have cardinality <= 1.
-            Dataset.schema.cardinality({field: Pills.get(scope.channelId).field, channel: channel, timeUnit: timeUnit}, false, true) > 1;
+            // Remove timeUnits that do not have variation (cardinality <= 1).
+            Dataset.schema.timeUnitHasVariation({field: field, channel: channel, timeUnit: timeUnit});
         };
 
         // timeUnits = T functions - undefined
