@@ -298,7 +298,7 @@ angular.module('vlui')
 
           if (vl.encoding.has(encoding, 'row') || vl.encoding.has(encoding, 'column') ||
             !vl.encoding.has(encoding, 'x') || !vl.encoding.has(encoding, 'y') ||
-            !vl.spec.alwaysNoOcclusion(spec)) { // FIXME replace this with CompassQL method
+            !vl.encoding.isAggregate(spec.encoding)) { // FIXME replace this proper alwaysNoOcclusion method
             return false;
           }
 
