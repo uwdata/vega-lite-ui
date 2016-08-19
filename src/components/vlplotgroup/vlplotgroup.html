@@ -48,20 +48,22 @@
 
       <a ng-if="showSort && chart.vlSpec && toggleSort.support(chart.vlSpec)"
         class="command" ng-click="toggleSort.toggle(chart.vlSpec)"
-        title="Sort"
-        >
+        title="Sort">
         <i class="fa sort"
           ng-class="toggleSortClass(chart.vlSpec)"
         ></i>
         <small ng-if="showLabel">Sort</small>
       </a>
+
       <a ng-if="showFilterNull && chart.vlSpec && toggleFilterNull.support(chart.vlSpec)"
         class="command" ng-click="toggleFilterNull(chart.vlSpec)"
+        title="Filter Null"
         ng-class='{active: chart.vlSpec && (chart.vlSpec.transform||{}).filterInvalid}'>
         <i class="fa fa-filter"></i>
         <small ng-if="showLabel">Filter</small>
         <small>NULL</small>
       </a>
+
       <a ng-if="showTranspose"
         title="Swap X/Y"
         class="command" ng-click="transpose()"> <!-- transpose -->
@@ -83,7 +85,7 @@
         <i class="fa fa-expand"></i>
       </a>
       <a ng-if="showSelect"
-        title="Select this encoding"
+        title="Set encoding to this chart"
         ng-click="select(chart)"
         class="command select">
         <i class="fa fa-server"></i>
