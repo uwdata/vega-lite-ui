@@ -46,7 +46,12 @@ angular.module('vlui')
         };
 
         var cardinalityFilter = function(timeUnit) {
-          var field = Pills.get(scope.channelId).field;
+
+          var pill =  Pills.get(scope.channelId);
+          if (!pill) {
+            return true;
+          }
+          var field = pill.field;
           // Convert 'any' channel to '?'.
           var channel = Pills.isAnyChannel(scope.channelId) ? '?' : scope.channelId;
           return !timeUnit || // Don't filter undefined.
