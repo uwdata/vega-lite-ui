@@ -36,12 +36,11 @@ angular.module('vlui')
         priority: '<',
         rescale: '<',
         thumbnail: '<',
-        tooltip: '<',
+        tooltip: '<'
       },
       replace: true,
       link: function(scope, element) {
-        var HOVER_TIMEOUT = 500,
-          TOOLTIP_TIMEOUT = 250;
+        var HOVER_TIMEOUT = 500;
 
         var view;
 
@@ -70,16 +69,10 @@ angular.module('vlui')
         scope.visId = (counter++);
 
         var hoverPromise = null;
-        var tooltipPromise = null;
         var renderQueueNextPromise = null;
 
         scope.hoverFocus = false;
-        scope.tooltipActive = false;
         scope.destroyed = false;
-
-
-
-        var format = vg.util.format.number('');
 
         scope.mouseenter = function() {
           hoverPromise = $timeout(function(){
@@ -103,72 +96,38 @@ angular.module('vlui')
           scope.hoverFocus = scope.unlocked = false;
         };
 
+        // (zening) HACK: this function is copied from vega-tooltip
+        // I should properly export it somehow
+        /* Decide if a scenegraph item deserves tooltip */
+        function shouldShowTooltip (item) {
+          // no data, no show
+          if (!item || !item.datum) return false;
+
+          // (small multiples) avoid showing tooltip for a facet's background
+          if (item.datum._facetID) return false;
+
+          // avoid showing tooltip for axis title and labels
+          if (!item.datum._id) return false;
+
+          return true;
+        }
+
         function viewOnMouseOver(event, item) {
-          if (!item || !item.datum) {
-            return;
-          }
-
-          tooltipPromise = $timeout(function activateTooltip(){
-
-            // avoid showing tooltip for facet's background
-            if (item.datum._facetID) {
-              return;
-            }
-
-            scope.tooltipActive = true;
+          if (shouldShowTooltip(item)) {
             Logger.logInteraction(Logger.actions.CHART_TOOLTIP, item.datum, {
               shorthand: scope.chart.shorthand,
               list: scope.listTitle
             });
-
-            // convert data into a format that we can easily use with ng table and ng-repeat
-            // TODO: revise if this is actually a good idea
-            scope.data = _(item.datum).omit('_prev', '_id') // omit vega internals
-              .toPairs().value()
-              .map(function(p) {
-                p[1] = vg.util.isNumber(p[1]) ? format(p[1]) : p[1];
-                return p;
-              });
-            scope.$digest();
-
-            var tooltip = element.find('.vis-tooltip'),
-              $body = angular.element($document),
-              width = tooltip.width(),
-              height= tooltip.height();
-
-            // put tooltip above if it's near the screen's bottom border
-            if (event.pageY+10+height < $body.height()) {
-              tooltip.css('top', (event.pageY+10));
-            } else {
-              tooltip.css('top', (event.pageY-10-height));
-            }
-
-            // put tooltip on left if it's near the screen's right border
-            if (event.pageX+10+ width < $body.width()) {
-              tooltip.css('left', (event.pageX+10));
-            } else {
-              tooltip.css('left', (event.pageX-10-width));
-            }
-          }, TOOLTIP_TIMEOUT);
+          }
         }
 
         function viewOnMouseOut(event, item) {
-          //clear positions
-          var tooltip = element.find('.vis-tooltip');
-          tooltip.css('top', null);
-          tooltip.css('left', null);
-          $timeout.cancel(tooltipPromise);
-          tooltipPromise = null;
-
-          if (scope.tooltipActive) {
+          if (shouldShowTooltip(item)) {
             Logger.logInteraction(Logger.actions.CHART_TOOLTIP_END, item.datum, {
               shorthand: scope.chart.shorthand,
               list: scope.listTitle
             });
           }
-          scope.tooltipActive = false;
-          scope.data = [];
-          scope.$digest();
         }
 
         function getVgSpec() {
@@ -269,6 +228,7 @@ angular.module('vlui')
                 }
 
                 view.update();
+
                 // read width / height from layout
                 var layout = view.data('layout').values()[0];
                 var renderer = getRenderer(layout.width, layout.height);
@@ -294,6 +254,10 @@ angular.module('vlui')
                 var endChart = new Date().getTime();
                 console.log('parse spec', (endParse-start), 'charting', (endChart-endParse), shorthand);
                 if (scope.tooltip) {
+                  // use vega-tooltip
+                  vl.tooltip(view, scope.chart.vlSpec);
+
+                  // for logging tooltip start and end
                   view.on('mouseover', viewOnMouseOver);
                   view.on('mouseout', viewOnMouseOut);
                 }
