@@ -7,7 +7,7 @@
  * # visListItem
  */
 angular.module('vlui')
-  .directive('vlPlotGroup', function (Bookmarks, consts, vg, vl, Dataset, Logger, _, Pills, Chart, $timeout) {
+  .directive('vlPlotGroup', function (Bookmarks, consts, vg, vl, Dataset, Logger, _, Pills, Chart, $timeout, Modals) {
     return {
       templateUrl: 'components/vlplotgroup/vlplotgroup.html',
       restrict: 'E',
@@ -151,6 +151,17 @@ angular.module('vlui')
             }
           }
           return false;
+        };
+
+        scope.select = function(chart) {
+          Logger.logInteraction(Logger.actions.SPEC_SELECT, chart.shorthand, {
+            list: scope.listTitle
+          });
+          Pills.parse(chart.vlSpec);
+          if (scope.postSelectAction) {
+            scope.postSelectAction();
+          }
+          Modals.close('bookmark-list');
         };
 
         scope.removeBookmark = function(chart) {
