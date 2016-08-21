@@ -41,8 +41,8 @@ angular.module('vlui')
       replace: true,
       link: function(scope, element) {
         var HOVER_TIMEOUT = 500;
-
         var view;
+        var tooltip;
 
         scope.vlPlotHeight = function() {
           return element.height();
@@ -54,6 +54,7 @@ angular.module('vlui')
 
         function destroyView() {
           if (view) {
+            tooltip.destroy(); // remove tooltip event listners on view
             view.off('mouseover');
             view.off('mouseout');
             view.destroy();
@@ -255,7 +256,7 @@ angular.module('vlui')
                 console.log('parse spec', (endParse-start), 'charting', (endChart-endParse), shorthand);
                 if (scope.tooltip) {
                   // use vega-tooltip
-                  vl.tooltip(view, scope.chart.vlSpec);
+                  tooltip = vl.tooltip(view, scope.chart.vlSpec);
 
                   // for logging tooltip start and end
                   view.on('mouseover', viewOnMouseOver);
