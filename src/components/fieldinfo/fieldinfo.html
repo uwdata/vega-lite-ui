@@ -41,55 +41,5 @@
         <i class="fa fa-plus"></i>
       </a>
     </span>
-
-    <span class="no-shrink info" ng-show="showInfo && !isEnumSpec(fieldDef.field)">
-      <i ng-if="fieldDef.aggregate !== 'count' && containsType([vlType.NOMINAL, vlType.ORDINAL], fieldDef.type)"
-        class="fa fa-info-circle"
-        tooltips tooltip-size="small"
-        tooltip-html="
-        <div class='tooltip-content'>
-          <strong>Name:</strong> {{fieldDef.field}}<br>
-          <strong>Cardinality:</strong> {{stats.distinct | number}}<br>
-          <strong>Min:</strong> {{stats.min}}<br>
-          <strong>Max:</strong> {{stats.max}}<br>
-        </div>"
-        tooltip-side="right"></i>
-      <i ng-if="fieldDef.aggregate !== 'count' && fieldDef.type === vlType.TEMPORAL"
-        class="fa fa-info-circle"
-        tooltips tooltip-size="small"
-        tooltip-html="
-        <div class='tooltip-content'>
-          <strong>Name:</strong> {{fieldDef.field}}<br>
-          <strong>Cardinality:</strong> {{stats.distinct | number}}<br>
-          <strong>Min:</strong> {{stats.min | date: short}}<br>
-          <strong>Max:</strong> {{stats.max | date: short}}<br>
-        </div>"
-        tooltip-side="right"></i>
-      <i ng-if="fieldDef.aggregate !== 'count' && fieldDef.type === vlType.QUANTITATIVE"
-        class="fa fa-info-circle"
-        tooltips tooltip-size="small"
-        tooltip-html="
-        <div class='tooltip-content'>
-          <strong>Name:</strong> {{fieldDef.field}}<br>
-          <strong>Cardinality:</strong> {{stats.distinct | number}}<br>
-          <strong>Min:</strong> {{stats.min | number}}<br>
-          <strong>Max:</strong> {{stats.max | number}}<br>
-
-          <strong>Stdev:</strong> {{stats.stdev | number:2}}<br>
-          <strong>Mean:</strong> {{stats.mean | number:2}}<br>
-          <strong>Median:</strong> {{stats.median | number}}<br>
-        </div>"
-        tooltip-side="right"></i>
-        <!--<strong>Skew:</strong> {{stats.skew | number:2}}<br>-->
-      <i ng-if="fieldDef.aggregate === 'count'"
-        class="fa fa-info-circle"
-        tooltips tooltip-size="small"
-        tooltip-html="
-        <div class='tooltip-content'>
-          <strong>Count:</strong> {{stats.max}}
-        </div>"
-        tooltip-side="right"></i>
-    </span>
-
   </span>
 </span>

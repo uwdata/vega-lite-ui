@@ -6,7 +6,7 @@ angular.module('vlui')
       templateUrl: 'components/functionselect/functionselect.html',
       restrict: 'E',
       scope: {
-        channelId: '=',
+        channelId: '<',
         fieldDef: '='
       },
       link: function(scope /*,element, attrs*/) {
@@ -46,7 +46,12 @@ angular.module('vlui')
         };
 
         var cardinalityFilter = function(timeUnit) {
-          var field = Pills.get(scope.channelId).field;
+
+          var pill =  Pills.get(scope.channelId);
+          if (!pill) {
+            return true;
+          }
+          var field = pill.field;
           // Convert 'any' channel to '?'.
           var channel = Pills.isAnyChannel(scope.channelId) ? '?' : scope.channelId;
           return !timeUnit || // Don't filter undefined.
@@ -105,7 +110,7 @@ angular.module('vlui')
         };
 
         // when parent objects modify the field
-        scope.$watch('fieldDef', function(pill) {
+        var fieldDefWatcher = scope.$watch('fieldDef', function(pill) {
           if (!pill) {
             return;
           }
@@ -156,6 +161,11 @@ angular.module('vlui')
             }
           }
         }, true);
+
+        scope.$on('$destroy', function() {
+          // Clean up watcher(s)
+          fieldDefWatcher();
+        });
       }
     };
   });

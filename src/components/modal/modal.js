@@ -13,7 +13,7 @@ angular.module('vlui')
       restrict: 'E',
       transclude: true,
       scope: {
-        autoOpen: '=',
+        autoOpen: '<',
         maxWidth: '@'
       },
       // Provide an interface for child directives to close this modal

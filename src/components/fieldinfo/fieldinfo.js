@@ -7,24 +7,23 @@
  * # fieldInfo
  */
 angular.module('vlui')
-  .directive('fieldInfo', function (ANY, Dataset, Drop, vl, cql, consts, _) {
+  .directive('fieldInfo', function (ANY, Drop, vl, cql) {
     return {
       templateUrl: 'components/fieldinfo/fieldinfo.html',
       restrict: 'E',
       replace: true,
       scope: {
-        fieldDef: '=',
-        showAdd: '=',
-        showCaret: '=',
-        showInfo: '=',
-        showRemove: '=',
-        showType: '=',
-        popupContent: '=',
+        fieldDef: '<',
+        showAdd: '<',
+        showCaret: '<',
+        showRemove: '<',
+        showType: '<',
+        popupContent: '<',
 
         action: '&',
         addAction: '&',
         removeAction: '&',
-        disableCountCaret: '=',
+        disableCountCaret: '<',
       },
       link: function(scope, element) {
         var funcsPopup;
@@ -35,10 +34,6 @@ angular.module('vlui')
         scope.typeName = null;
         scope.icon = null;
         scope.null = null;
-
-        scope.containsType = function(types, type) {
-          return _.includes(types, type);
-        };
 
         scope.clicked = function($event){
           if(scope.action && $event.target !== element.find('.fa-caret-down')[0] &&
@@ -54,7 +49,7 @@ angular.module('vlui')
             (fieldDef._bin && 'bin') || (fieldDef._any && 'auto');
         };
 
-        scope.$watch('popupContent', function(popupContent) {
+        var popupContentWatcher = scope.$watch('popupContent', function(popupContent) {
           if (!popupContent) { return; }
 
           if (funcsPopup) {
@@ -103,18 +98,19 @@ angular.module('vlui')
           return dict[type];
         }
 
-        scope.$watch('fieldDef', function(fieldDef) {
+        var fieldDefWatcher = scope.$watch('fieldDef', function(fieldDef) {
           scope.icon = getTypeDictValue(fieldDef.type, TYPE_ICONS);
           scope.typeName = getTypeDictValue(fieldDef.type, TYPE_NAMES);
-          if (fieldDef.field && Dataset.schema) { // only calculate stats if we have field attached and have schema ready
-            scope.stats = Dataset.schema.stats(fieldDef);
-          }
         });
 
         scope.$on('$destroy', function() {
           if (funcsPopup && funcsPopup.destroy) {
             funcsPopup.destroy();
           }
+
+          // unregister watchers
+          popupContentWatcher();
+          fieldDefWatcher();
         });
       }
     };

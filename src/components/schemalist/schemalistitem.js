@@ -13,8 +13,8 @@ angular.module('vlui')
       restrict: 'E',
       replace: false,
       scope: {
-        fieldDef: '=',
-        showAdd:  '=',
+        fieldDef: '=', // TODO: determine if it's one way
+        showAdd:  '<',
       },
       link: function postLink(scope) {
         scope.isEnumSpec = cql.enumSpec.isEnumSpec;

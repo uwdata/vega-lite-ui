@@ -42,7 +42,7 @@
   </div>
   <div class="drop-container">
     <div class="popup-menu shelf-properties shelf-properties-{{channelId}}">
-      <div>
+      <!--<div>
         <property-editor ng-show="schema.properties.value"
           id="channelId + 'value'"
           type="schema.properties.value.type"
@@ -75,7 +75,9 @@
             default="scaleProp.default"
           ></property-editor>
         </div>
+
       </div>
+      -->
     </div>
     <div class="popup-menu shelf-functions shelf-functions-{{channelId}}">
       <function-select ng-if="!preview" field-def="encoding[channelId]" channel-id="channelId"></function-select>

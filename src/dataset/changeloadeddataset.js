@@ -53,7 +53,7 @@ angular.module('vlui')
           group: 'sample'
         });
 
-        scope.$watch(function() {
+        var datasetWatcher = scope.$watch(function() {
           return Dataset.datasets.length;
         }, function() {
           scope.userData = _.filter(Dataset.datasets, function(dataset) {
@@ -66,6 +66,11 @@ angular.module('vlui')
           Dataset.update(dataset);
           closeModal();
         };
+
+        scope.$on('$destroy', function() {
+          // Clean up watchers
+          datasetWatcher();
+        });
       }
     };
   });

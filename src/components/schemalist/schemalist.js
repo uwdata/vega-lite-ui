@@ -6,9 +6,9 @@ angular.module('vlui')
       templateUrl: 'components/schemalist/schemalist.html',
       restrict: 'E',
       scope: {
-        orderBy: '=',
-        fieldDefs: '=',
-        showAdd: '='
+        orderBy: '<',
+        fieldDefs: '<',
+        showAdd: '<'
       },
       replace: true
     };

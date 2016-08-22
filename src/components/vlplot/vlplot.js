@@ -25,47 +25,75 @@ angular.module('vlui')
         chart: '=',
 
         //optional
-        disabled: '=',
+        disabled: '<',
         /** A function that returns if the plot is still in the view, so it might be omitted from the render queue if necessary. */
-        isInList: '=',
+        isInList: '<',
+        listTitle: '<',
 
-        alwaysScrollable: '=',
+        alwaysScrollable: '<',
         configSet: '@',
-        maxHeight:'=',
-        maxWidth: '=',
-        overflow: '=',
-        priority: '=',
-        rescale: '=',
-        thumbnail: '=',
-        tooltip: '=',
+        maxHeight:'<',
+        maxWidth: '<',
+        overflow: '<',
+        priority: '<',
+        rescale: '<',
+        thumbnail: '<',
+        tooltip: '<',
       },
       replace: true,
       link: function(scope, element) {
         var HOVER_TIMEOUT = 500,
           TOOLTIP_TIMEOUT = 250;
 
+        var view;
+
+        function destroyView() {
+          if (view) {
+            view.off('mouseover');
+            view.off('mouseout');
+            view.destroy();
+            view = null;
+
+            var shorthand = getShorthand();
+            if (consts.debug && $window.views) {
+              delete $window.views[shorthand];
+            }
+          }
+        }
+
         scope.visId = (counter++);
-        scope.hoverPromise = null;
-        scope.tooltipPromise = null;
+
+        var hoverPromise = null;
+        var tooltipPromise = null;
+        var renderQueueNextPromise = null;
+
         scope.hoverFocus = false;
         scope.tooltipActive = false;
         scope.destroyed = false;
 
+
+
         var format = vg.util.format.number('');
 
-        scope.mouseover = function() {
-          scope.hoverPromise = $timeout(function(){
-            Logger.logInteraction(Logger.actions.CHART_MOUSEOVER, scope.chart.shorthand);
+        scope.mouseenter = function() {
+          hoverPromise = $timeout(function(){
+            Logger.logInteraction(Logger.actions.CHART_MOUSEOVER, scope.chart.shorthand,{
+              list: scope.listTitle
+            });
             scope.hoverFocus = !scope.thumbnail;
           }, HOVER_TIMEOUT);
         };
 
-        scope.mouseout = function() {
+        scope.mouseleave = function() {
           if (scope.hoverFocus) {
-            Logger.logInteraction(Logger.actions.CHART_MOUSEOUT, scope.chart.shorthand);
+            Logger.logInteraction(Logger.actions.CHART_MOUSEOUT, scope.chart.shorthand, {
+              list: scope.listTitle
+            });
           }
 
-          $timeout.cancel(scope.hoverPromise);
+          $timeout.cancel(hoverPromise);
+          hoverPromise = null;
+
           scope.hoverFocus = scope.unlocked = false;
         };
 
@@ -74,7 +102,7 @@ angular.module('vlui')
             return;
           }
 
-          scope.tooltipPromise = $timeout(function activateTooltip(){
+          tooltipPromise = $timeout(function activateTooltip(){
 
             // avoid showing tooltip for facet's background
             if (item.datum._facetID) {
@@ -83,7 +111,8 @@ angular.module('vlui')
 
             scope.tooltipActive = true;
             Logger.logInteraction(Logger.actions.CHART_TOOLTIP, item.datum, {
-              shorthand: scope.chart.shorthand
+              shorthand: scope.chart.shorthand,
+              list: scope.listTitle
             });
 
             // convert data into a format that we can easily use with ng table and ng-repeat
@@ -122,10 +151,13 @@ angular.module('vlui')
           var tooltip = element.find('.vis-tooltip');
           tooltip.css('top', null);
           tooltip.css('left', null);
-          $timeout.cancel(scope.tooltipPromise);
+          $timeout.cancel(tooltipPromise);
+          tooltipPromise = null;
+
           if (scope.tooltipActive) {
             Logger.logInteraction(Logger.actions.CHART_TOOLTIP_END, item.datum, {
-              shorthand: scope.chart.shorthand
+              shorthand: scope.chart.shorthand,
+              list: scope.listTitle
             });
           }
           scope.tooltipActive = false;
@@ -188,11 +220,12 @@ angular.module('vlui')
           }
         }
 
+
         function render(spec) {
+
           if (!spec) {
             if (view) {
-              view.off('mouseover');
-              view.off('mouseout');
+              destroyView();
             }
             return;
           }
@@ -217,12 +250,12 @@ angular.module('vlui')
             vg.parse.spec(spec, function(error, chart) {
               if (error) {
                 console.error('error', error);
-                $timeout(renderQueueNext, 1);
+                renderQueueNextPromise = $timeout(renderQueueNext, 1);
                 return;
               }
               try {
                 var endParse = new Date().getTime();
-                view = null;
+                destroyView();
                 view = chart({el: element[0]});
 
                 if (!consts.useUrl) {
@@ -247,7 +280,9 @@ angular.module('vlui')
                   $window.views[shorthand] = view;
                 }
 
-                Logger.logInteraction(Logger.actions.CHART_RENDER, scope.chart.shorthand);
+                Logger.logInteraction(Logger.actions.CHART_RENDER, scope.chart.shorthand, {
+                  list: scope.listTitle
+                });
                 rescaleIfEnable();
 
                 var endChart = new Date().getTime();
@@ -259,7 +294,7 @@ angular.module('vlui')
               } catch (e) {
                 console.error(e, JSON.stringify(spec));
               } finally {
-                $timeout(renderQueueNext, 1);
+                renderQueueNextPromise = $timeout(renderQueueNext, 1);
               }
 
             });
@@ -277,8 +312,7 @@ angular.module('vlui')
           }
         }
 
-        var view;
-        scope.$watch(function() {
+        var specWatcher = scope.$watch(function() {
           // Omit data property to speed up deep watch
           return _.omit(scope.chart.vlSpec, 'data');
         }, function() {
@@ -293,20 +327,32 @@ angular.module('vlui')
         scope.$on('$destroy', function() {
           console.log('vlplot destroyed');
           if (view) {
-            view.off('mouseover');
-            view.off('mouseout');
-            view = null;
+            destroyView();
           }
-          var shorthand = getShorthand();
-          if (consts.debug && $window.views) {
-            delete $window.views[shorthand];
+
+          if (hoverPromise) {
+            $timeout.cancel(hoverPromise);
+            hoverPromise = null;
           }
+
+          if (tooltipPromise) {
+            $timeout.cancel(tooltipPromise);
+            tooltipPromise = null;
+          }
+
+          // if (renderQueueNextPromise) {
+          //   $timeout.cancel(renderQueueNextPromise);
+          //   renderQueueNextPromise = null;
+          // }
 
           scope.destroyed = true;
           // FIXME another way that should eliminate things from memory faster should be removing
           // maybe something like
           // renderQueue.splice(renderQueue.indexOf(parseVega), 1));
           // but without proper testing, this is riskier than setting scope.destroyed.
+
+          // Clean up watcher
+          specWatcher();
         });
       }
     };

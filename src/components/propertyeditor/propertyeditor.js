@@ -33,11 +33,17 @@ angular.module('vlui')
           scope.automodel.value = scope.group[scope.propName] === undefined;
 
           // change the value to undefined if auto is true
-          scope.$watch('automodel.value', function() {
+          var autoModelWatcher = scope.$watch('automodel.value', function() {
             if (scope.automodel.value === true) {
               scope.group[scope.propName] = undefined;
             }
           });
+
+          scope.$on('$destroy', function() {
+            // Clean up watcher
+            autoModelWatcher();
+          });
+
         }
 
         scope.isRange = scope.max !== undefined && scope.min !== undefined;

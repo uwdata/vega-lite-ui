@@ -14,6 +14,8 @@
         ng-repeat="bookmark in Bookmarks.list | orderObjectBy : 'timeAdded' : false"
         class="wrapped-vl-plot-group card"
 
+        list-title="Bookmark"
+
         chart="bookmark.chart"
         field-set="bookmark.chart.fieldSet"
 

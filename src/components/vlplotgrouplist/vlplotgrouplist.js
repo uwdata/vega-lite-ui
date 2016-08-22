@@ -8,12 +8,13 @@ angular.module('vlui')
       replace: true,
       scope: {
         /** An instance of specQueryModelGroup */
-        enablePillsPreview: '=',
-        initialLimit: '=',
-        listTitle: '=',
-        items: '=',
-        priority: '=',
-        showMore: '=',
+        enablePillsPreview: '<',
+        initialLimit: '<',
+        listTitle: '<',
+        hideListTitle: '<',
+        charts: '<',
+        priority: '<',
+        showMore: '<',
         postSelectAction: '&'
       },
       link: function postLink(scope /*, element, attrs*/) {
@@ -29,7 +30,7 @@ angular.module('vlui')
 
         // element.bind('scroll', function(){
         //    if(jQuery(this).scrollTop() + jQuery(this).innerHeight() >= jQuery(this)[0].scrollHeight){
-        //     if (scope.limit < scope.modelGroup.items.length) {
+        //     if (scope.limit < scope.modelGroup.charts.length) {
         //       scope.increaseLimit();
         //     }
         //    }
@@ -44,8 +45,8 @@ angular.module('vlui')
 
         /** return if the plot is still in the view, so it might be omitted from the render queue if necessary. */
         function isInList(chart) {
-          for (var i = 0; i < scope.items.length; i++) {
-            if(chart.specM === scope.items[i].getTopSpecQueryModel()) {
+          for (var i = 0; i < scope.charts.length; i++) {
+            if(chart.shorthand === scope.charts[i].shorthand) {
               return true;
             }
           }

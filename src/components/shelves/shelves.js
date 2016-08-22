@@ -8,8 +8,8 @@ angular.module('vlui')
       restrict: 'E',
       scope: {
         spec: '=',
-        preview: '=',
-        supportAny: '='
+        preview: '<',
+        supportAny: '<'
       },
       replace: true,
       controller: function($scope, ANY, util, vl, Config, Dataset, Logger, Pills) {
@@ -28,11 +28,11 @@ angular.module('vlui')
         };
 
         $scope.clear = function(){
-          Logger.logInteraction(Logger.actions.SPEC_CLEAN, null);
+          Logger.logInteraction(Logger.actions.SPEC_CLEAN, $scope.spec);
           Pills.reset();
         };
 
-        $scope.$watch('spec', function(spec) {
+        var specWatcher = $scope.$watch('spec', function(spec) {
           // populate anyChannelIds so we show all or them
           if ($scope.supportAny) {
             $scope.anyChannelIds = util.keys(spec.encoding).reduce(function(anyChannelIds, channelId) {
@@ -48,6 +48,12 @@ angular.module('vlui')
             Pills.update(spec);
           }
         }, true); //, true /* watch equality rather than reference */);
+
+
+        $scope.$on('$destroy', function() {
+          // Clean up watcher
+          specWatcher();
+        });
       }
     };
   });

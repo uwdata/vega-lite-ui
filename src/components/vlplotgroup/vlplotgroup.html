@@ -1,8 +1,13 @@
-<div class="vl-plot-group vflex">
+<div class="vl-plot-group vflex"
+  ng-dblclick="selectAction()"
+  >
   <div ng-show="showExpand || fieldSet || showTranspose || showBookmark && Bookmarks.isSupported || showToggle"
       class="vl-plot-group-header no-shrink"
     >
-    <div class="field-set-info">
+    <div class="field-set-info"
+      ng-mouseenter="enablePreview()"
+      ng-mouseleave="disablePreview()"
+      >
       <field-info ng-repeat="fieldDef in fieldSet"
         ng-if="fieldSet && (fieldDef.field || fieldDef.autoCount)"
         field-def='fieldDef'
@@ -15,16 +20,16 @@
           'enumerated-field': isEnumeratedField(chart, $index),
           'enumerated-channel': isEnumeratedChannel(chart, $index)
         }"
-        ng-mouseover="fieldInfoMouseover(fieldDef, $index)"
-        ng-mouseout="fieldInfoMouseout(fieldDef, $index)"
+        ng-mouseenter="fieldInfoMouseover(fieldDef, $index)"
+        ng-mouseleave="fieldInfoMouseout(fieldDef, $index)"
       ></field-info>
     </div>
+    <div style="flex-grow:1"><!--blank div that pushes .tooltbox to the right--></div>
     <div class="toolbox">
       <a ng-if="consts.debug && showDebug"
         class="command debug">
         <!-- Mouseover on wrench icon is the trigger to lazy-render the popup -->
-        <i class="fa fa-wrench" ng-click="shCopied=''; vlCopied=''; vgCopied='';"
-          ng-mouseover="initializePopup();"></i>
+        <i class="fa fa-wrench" ng-click="shCopied=''; vlCopied=''; vgCopied='';"></i>
       </a>
       <vl-plot-group-popup ng-if="consts.debug && showDebug && renderPopup"></vl-plot-group-popup>
 
@@ -109,6 +114,7 @@
 
     disabled="disabled"
     is-in-list="isInList"
+    list-title="listTitle"
 
     always-scrollable="alwaysScrollable"
     config-set="{{configSet||'small'}}"

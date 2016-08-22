@@ -22,48 +22,49 @@ angular.module('vlui')
         chart: '=',
 
         //optional
-        disabled: '=',
-        isInList: '=',
+        disabled: '<',
+        isInList: '<',
+        listTitle: '<',
 
-        alwaysScrollable: '=',
+        alwaysScrollable: '<',
         configSet: '@',
-        enablePillsPreview: '=',
-        maxHeight: '=',
-        maxWidth: '=',
-        overflow: '=',
-        priority: '=',
-        rescale: '=',
-        thumbnail: '=',
-        tooltip: '=',
+        enablePillsPreview: '<',
+        maxHeight: '<',
+        maxWidth: '<',
+        overflow: '<',
+        priority: '<',
+        rescale: '<',
+        thumbnail: '<',
+        tooltip: '<',
 
         /* vlplotgroup specific */
 
         /** Set of fieldDefs for showing field info.  For Voyager2, this might be just a subset of fields that are ambiguous. */
-        fieldSet: '=',
+        fieldSet: '<',
 
-        showBookmark: '@',
-        showDebug: '=',
-        showExpand: '=',
-        showFilterNull: '@',
-        showLabel: '@',
-        showLog: '@',
-        showSelect: '@',
-        showSort: '@',
-        showTranspose: '@',
+        showBookmark: '<',
+        showDebug: '<',
+        showExpand: '<',
+        showFilterNull: '<',
+        showLabel: '<',
+        showLog: '<',
+        showSelect: '<',
+        showSort: '<',
+        showTranspose: '<',
 
         /** Whether the log / transpose sort cause side effect to the shelf  */
-        toggleShelf: '=',
+        toggleShelf: '<',
 
-        alwaysSelected: '=',
-        isSelected: '=',
-        highlighted: '=',
+        alwaysSelected: '<',
+        isSelected: '<',
+        highlighted: '<',
         expandAction: '&',
         selectAction: '&'
       },
       link: function postLink(scope) {
         scope.Bookmarks = Bookmarks;
         scope.consts = consts;
-        scope.hovered = false;
+
 
         // bookmark alert
         scope.showBookmarkAlert = false;
@@ -72,16 +73,35 @@ angular.module('vlui')
             scope.showBookmarkAlert = !scope.showBookmarkAlert; // toggle alert
           }
           else {
-            Bookmarks.add(chart);
+            Bookmarks.add(chart, scope.listTitle);
           }
         };
 
-        var hoverPromise = null;
+        var fieldHoverPromise = null;
+        var previewPromise = null;
+
+        scope.enablePreview = function() {
+          previewPromise = $timeout(function() {
+            if (scope.enablePillsPreview) {
+              Pills.preview(true, scope.chart, scope.listTitle);
+            }
+          }, 500);
+
+        };
+
+        scope.disablePreview = function() {
+          if (previewPromise) {
+            $timeout.cancel(previewPromise);
+          }
+          previewPromise = null;
+
+          if (scope.enablePillsPreview) {
+            Pills.preview(false, scope.chart, scope.listTitle);
+          }
+        };
 
         scope.fieldInfoMouseover = function(fieldDef, index) {
-          scope.hovered = true;
-
-          hoverPromise = $timeout(function() {
+          fieldHoverPromise = $timeout(function() {
             (scope.highlighted||{})[fieldDef.field] = true;
 
             // Link to original field in the CQL-based spec
@@ -94,28 +114,24 @@ angular.module('vlui')
             }
 
             Logger.logInteraction(Logger.actions.FIELDDEF_HIGHLIGHTED, scope.chart.shorthand, {
-              highlightedField: fieldDef.field
+              highlightedField: fieldDef.field,
+              list: scope.listTitle
             });
-
-            if (scope.enablePillsPreview) {
-              Pills.preview(scope.chart.vlSpec);
-            }
           }, 500);
         };
 
         scope.fieldInfoMouseout = function(fieldDef, index) {
-          scope.hovered = false;
-
-          if (hoverPromise) {
+          if (fieldHoverPromise) {
             // if we unhover within
-            $timeout.cancel(hoverPromise);
+            $timeout.cancel(fieldHoverPromise);
           }
-          hoverPromise = null;
+          fieldHoverPromise = null;
 
           if ((scope.highlighted||{})[fieldDef.field]) {
             // disable preview if it's enabled
             Logger.logInteraction(Logger.actions.FIELDDEF_UNHIGHLIGHTED, scope.chart.shorthand, {
-              highlightedField: fieldDef.field
+              highlightedField: fieldDef.field,
+              list: scope.listTitle
             });
 
             (scope.highlighted||{})[fieldDef.field] = false;
@@ -127,10 +143,6 @@ angular.module('vlui')
                 var fieldEnumSpecName = enumSpecIndex.encodings[index].field.name;
                 delete (scope.highlighted||{})[fieldEnumSpecName];
               }
-            }
-
-            if (scope.enablePillsPreview) {
-              Pills.preview(null);
             }
           }
         };
@@ -207,7 +219,9 @@ angular.module('vlui')
             scale.type = scale.type === 'log' ? 'linear' : 'log';
           }
 
-          Logger.logInteraction(Logger.actions.LOG_TOGGLE, scope.chart.shorthand);
+          Logger.logInteraction(Logger.actions.LOG_TOGGLE, scope.chart.shorthand, {
+            list: scope.listTitle
+          });
         };
 
         scope.log.active = function(spec, channel) {
@@ -223,10 +237,16 @@ angular.module('vlui')
         // TODO: extract toggleFilterNull to be its own class
 
         scope.toggleFilterNull = function(spec) {
-          Logger.logInteraction(Logger.actions.NULL_FILTER_TOGGLE, scope.chart.shorthand);
+          Logger.logInteraction(Logger.actions.NULL_FILTER_TOGGLE, scope.chart.shorthand, {
+            list: scope.listTitle
+          });
 
-          spec.transform = spec.transform || {};
-          spec.transform.filterInvalid = spec.transform.filterInvalid === true ? undefined : true;
+          if (scope.toggleShelf) {
+            Pills.toggleFilterInvalid();
+          } else {
+            spec.transform = spec.transform || {};
+            spec.transform.filterInvalid = spec.transform.filterInvalid === true ? undefined : true;
+          }
         };
 
         scope.toggleFilterNull.support = function(spec) {
@@ -258,13 +278,14 @@ angular.module('vlui')
 
           Logger.logInteraction(Logger.actions.SORT_TOGGLE, scope.chart.shorthand, {
             currentMode: currentMode,
-            newMode: newMode
+            newMode: newMode,
+            list: scope.listTitle
           });
 
           var channels = toggleSort.channels(spec);
 
           if (scope.toggleShelf) {
-            Pills.setSort(channels.ordinal, toggleSort.getSort(newMode, spec));
+            Pills.sort(channels.ordinal, toggleSort.getSort(newMode, spec));
           } else {
             spec.encoding[channels.ordinal].sort = toggleSort.getSort(newMode, spec);
           }
@@ -377,7 +398,9 @@ angular.module('vlui')
         };
 
         scope.transpose = function() {
-          Logger.logInteraction(Logger.actions.TRANSPOSE_TOGGLE, scope.chart.shorthand);
+          Logger.logInteraction(Logger.actions.TRANSPOSE_TOGGLE, scope.chart.shorthand, {
+            list: scope.listTitle
+          });
           if (scope.toggleShelf) {
             Pills.transpose();
           } else {

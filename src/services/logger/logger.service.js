@@ -184,7 +184,9 @@ angular.module('vlui')
           service.db.insert(service.tableName, row);
         }
 
-        console.log('[Logging] ', action.id, label, data);
+        if (action.level.rank >= service.levels[consts.logPrintLevel || 'INFO'].rank) {
+          console.log('[Logging] ', action.id, label, data);
+        }
       }
     };
 

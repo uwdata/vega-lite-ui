@@ -28,6 +28,7 @@ angular.module('vlui')
       /** Pass message to toggler listeners */
       rescale: rescale,
       sort: sort,
+      toggleFilterInvalid: toggleFilterInvalid,
       transpose: transpose,
 
       /** Parse a new spec */
@@ -144,6 +145,12 @@ angular.module('vlui')
       }
     }
 
+    function toggleFilterInvalid() {
+      if (Pills.listener && Pills.listener.toggleFilterInvalid) {
+        Pills.listener.toggleFilterInvalid();
+      }
+    }
+
     function transpose() {
       if (Pills.listener && Pills.listener.transpose) {
         Pills.listener.transpose();
@@ -166,9 +173,9 @@ angular.module('vlui')
      *
      * @param {any} spec
      */
-    function preview(spec) {
+    function preview(enable, chart, listTitle) {
       if (Pills.listener) {
-        Pills.listener.preview(spec);
+        Pills.listener.preview(enable, chart, listTitle);
       }
     }
 

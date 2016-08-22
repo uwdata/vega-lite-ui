@@ -31,6 +31,7 @@ angular.module('vlui', [
     useUrl: true,
     logging: true,
     logLevel: 'INFO',
+    logPrintLevel: 'INFO',
     logToWebSql: false, // in user studies, set this to true
     defaultConfigSet: 'large',
     appId: 'vlui',
