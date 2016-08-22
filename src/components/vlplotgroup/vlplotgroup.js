@@ -58,8 +58,7 @@ angular.module('vlui')
         alwaysSelected: '<',
         isSelected: '<',
         highlighted: '<',
-        expandAction: '&',
-        selectAction: '&'
+        expandAction: '&'
       },
       link: function postLink(scope) {
         scope.Bookmarks = Bookmarks;
