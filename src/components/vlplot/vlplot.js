@@ -97,38 +97,18 @@ angular.module('vlui')
           scope.hoverFocus = scope.unlocked = false;
         };
 
-        // (zening) HACK: this function is copied from vega-tooltip
-        // I should properly export it somehow
-        /* Decide if a scenegraph item deserves tooltip */
-        function shouldShowTooltip (item) {
-          // no data, no show
-          if (!item || !item.datum) return false;
-
-          // (small multiples) avoid showing tooltip for a facet's background
-          if (item.datum._facetID) return false;
-
-          // avoid showing tooltip for axis title and labels
-          if (!item.datum._id) return false;
-
-          return true;
+        function onTooltipAppear(event, item) {
+          Logger.logInteraction(Logger.actions.CHART_TOOLTIP, item.datum, {
+            shorthand: scope.chart.shorthand,
+            list: scope.listTitle
+          });
         }
 
-        function viewOnMouseOver(event, item) {
-          if (shouldShowTooltip(item)) {
-            Logger.logInteraction(Logger.actions.CHART_TOOLTIP, item.datum, {
-              shorthand: scope.chart.shorthand,
-              list: scope.listTitle
-            });
-          }
-        }
-
-        function viewOnMouseOut(event, item) {
-          if (shouldShowTooltip(item)) {
-            Logger.logInteraction(Logger.actions.CHART_TOOLTIP_END, item.datum, {
-              shorthand: scope.chart.shorthand,
-              list: scope.listTitle
-            });
-          }
+        function onTooltipDisappear(event, item) {
+          Logger.logInteraction(Logger.actions.CHART_TOOLTIP_END, item.datum, {
+            shorthand: scope.chart.shorthand,
+            list: scope.listTitle
+          });
         }
 
         function getVgSpec() {
@@ -256,11 +236,10 @@ angular.module('vlui')
                 console.log('parse spec', (endParse-start), 'charting', (endChart-endParse), shorthand);
                 if (scope.tooltip) {
                   // use vega-tooltip
-                  tooltip = vl.tooltip(view, scope.chart.vlSpec);
-
-                  // for logging tooltip start and end
-                  view.on('mouseover', viewOnMouseOver);
-                  view.on('mouseout', viewOnMouseOut);
+                  tooltip = vl.tooltip(view, scope.chart.vlSpec, {
+                    onAppear: onTooltipAppear,
+                    onDisappear: onTooltipDisappear
+                  });
                 }
               } catch (e) {
                 console.error(e, JSON.stringify(spec));
