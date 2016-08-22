@@ -32,8 +32,6 @@ angular.module('vlui')
 
         alwaysScrollable: '<',
         configSet: '@',
-        maxHeight:'<',
-        maxWidth: '<',
         overflow: '<',
         priority: '<',
         rescale: '<',
@@ -46,6 +44,14 @@ angular.module('vlui')
           TOOLTIP_TIMEOUT = 250;
 
         var view;
+
+        scope.vlPlotHeight = function() {
+          return element.height();
+        };
+
+        scope.vlPlotWidth = function() {
+          return element.width();
+        };
 
         function destroyView() {
           if (view) {

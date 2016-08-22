@@ -29,8 +29,6 @@ angular.module('vlui')
         alwaysScrollable: '<',
         configSet: '@',
         enablePillsPreview: '<',
-        maxHeight: '<',
-        maxWidth: '<',
         overflow: '<',
         priority: '<',
         rescale: '<',

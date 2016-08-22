@@ -22,3 +22,37 @@
     text-align: left;
   }
 }
+
+.vl-plot {
+  min-width: 250px;
+  overflow: hidden;
+  text-align: center;
+  .vega canvas {
+    margin: auto;
+  }
+  &.fit {
+    width:100%;
+    .vega {
+      align-self: flex-end;
+    }
+  }
+
+  &.overflow-y {
+    padding-right: 11px;
+    &.scroll {
+      padding-right: 0px;
+    }
+  }
+
+  &.overflow-x {
+    padding-bottom: 11px;
+    &.scroll {
+      padding-bottom: 0px;
+    }
+  }
+
+  &.scroll {
+    @extend .persist-scroll;
+    overflow: auto;
+  }
+}

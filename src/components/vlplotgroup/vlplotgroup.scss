@@ -89,30 +89,6 @@
       transform: scaleX(-1);
     }
   }
-
-}
-
-.vl-plot {
-  min-width: 250px;
-  overflow: hidden;
-  text-align: center;
-  .vega canvas {
-    margin: auto;
-  }
-  &.fit {
-    width:100%;
-    .vega {
-      align-self: flex-end;
-    }
-  }
-
-  &.overflow {
-    //cursor: pointer;
-    &.scroll {
-      @extend .persist-scroll;
-      overflow: auto;
-    }
-  }
 }
 
 .dev-tool {

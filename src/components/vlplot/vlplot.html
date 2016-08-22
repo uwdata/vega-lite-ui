@@ -1,7 +1,8 @@
 <div class="vl-plot" id="vis-{{visId}}"
   ng-class="{
-    fit: !alwaysScrollable && !overflow && (maxHeight && (!height || height <= maxHeight)) && (maxWidth && (!width || width <= maxWidth)),
-    overflow: alwaysScrollable  || overflow || (maxHeight && height && height > maxHeight) || (maxWidth && width && width > maxWidth),
+    fit: !alwaysScrollable && !overflow && height > vlPlotHeight() && width > vlPlotWidth(),
+    'overflow-y': (alwaysScrollable  || overflow) && height > vlPlotHeight(),
+    'overflow-x': (alwaysScrollable  || overflow) && width > vlPlotWidth(),
     scroll: alwaysScrollable || unlocked || hoverFocus
   }"
   ng-mousedown="unlocked=!thumbnail"
