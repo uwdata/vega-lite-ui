@@ -13,7 +13,8 @@ angular.module('vlui')
       restrict: 'E',
       replace: true,
       scope: {
-        highlighted: '=' // This one is really two-way binding.
+        highlighted: '=', // This one is really two-way binding.
+        postSelectAction: '='
       },
       link: function postLink(scope /*, element, attrs*/) {
         scope.Bookmarks = Bookmarks;

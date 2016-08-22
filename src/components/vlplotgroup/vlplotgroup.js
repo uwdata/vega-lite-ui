@@ -170,8 +170,8 @@ angular.module('vlui')
             list: scope.listTitle
           });
           Pills.parse(chart.vlSpec);
-          if (scope.postSelectAction) {
-            scope.postSelectAction();
+          if (scope.$parent.postSelectAction) {
+            scope.$parent.postSelectAction();
           }
           Modals.close('bookmark-list');
         };
