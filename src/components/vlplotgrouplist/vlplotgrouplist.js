@@ -25,7 +25,6 @@ angular.module('vlui')
         scope.getChart = Chart.getChart;
         scope.increaseLimit = increaseLimit;
         scope.isInlist = isInList;
-        scope.select = select;
         scope.Pills = Pills;
 
         // element.bind('scroll', function(){
@@ -51,16 +50,6 @@ angular.module('vlui')
             }
           }
           return false;
-        }
-
-        function select(chart) {
-          Logger.logInteraction(Logger.actions.SPEC_SELECT, chart.shorthand, {
-            list: scope.listTitle
-          });
-          Pills.parse(chart.vlSpec);
-          if (scope.postSelectAction) {
-            scope.postSelectAction();
-          }
         }
       }
     };
