@@ -171,7 +171,7 @@ angular.module('vlui')
           if (scope.$parent.postSelectAction) {
             scope.$parent.postSelectAction();
           }
-          Modals.close('bookmark-list');
+          Modals.close('bookmark-list'); // HACK: this line is only necessary when this function is called from bookmark list
         };
 
         scope.removeBookmark = function(chart) {
