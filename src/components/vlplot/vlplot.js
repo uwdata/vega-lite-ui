@@ -238,7 +238,8 @@ angular.module('vlui')
                   // use vega-tooltip
                   tooltip = vl.tooltip(view, scope.chart.vlSpec, {
                     onAppear: onTooltipAppear,
-                    onDisappear: onTooltipDisappear
+                    onDisappear: onTooltipDisappear,
+                    delay: 200
                   });
                 }
               } catch (e) {
