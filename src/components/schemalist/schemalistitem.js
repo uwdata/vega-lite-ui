@@ -44,10 +44,11 @@ angular.module('vlui')
         // TODO(https://github.com/vega/vega-lite-ui/issues/187):
         // consider if we can use validator / cql instead
         var allowedCasting = {
-          quantitative: [vl.type.QUANTITATIVE, vl.type.ORDINAL, vl.type.NOMINAL],
-          ordinal: [vl.type.ORDINAL, vl.type.NOMINAL],
-          nominal: [vl.type.NOMINAL, vl.type.ORDINAL],
-          temporal: [vl.type.TEMPORAL, vl.type.ORDINAL, vl.type.NOMINAL],
+          integer: [vl.type.QUANTITATIVE, vl.type.ORDINAL, vl.type.NOMINAL],
+          number: [vl.type.QUANTITATIVE, vl.type.ORDINAL, vl.type.NOMINAL],
+          date: [vl.TEMPORAL, vl.type.NOMINAL, vl.type.ORDINAL],
+          string: [vl.type.ORDINAL, vl.type.NOMINAL],
+          boolean: [vl.type.ORDINAL, vl.type.NOMINAL],
           all: [vl.type.QUANTITATIVE, vl.type.TEMPORAL, vl.type.ORDINAL, vl.type.NOMINAL]
         };
 
@@ -55,7 +56,7 @@ angular.module('vlui')
           if (cql.enumSpec.isEnumSpec(fieldDef.field)) {
             scope.allowedTypes = allowedCasting.all;
           } else {
-            scope.allowedTypes = allowedCasting[Dataset.schema.type(fieldDef.field)];
+            scope.allowedTypes = allowedCasting[Dataset.schema.primitiveType(fieldDef.field)];
           }
 
           scope.isAnyField = cql.enumSpec.isEnumSpec(fieldDef.field);
