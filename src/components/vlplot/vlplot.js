@@ -43,6 +43,7 @@ angular.module('vlui')
         var HOVER_TIMEOUT = 500;
         var view;
         var tooltip;
+        var TOOLTIP_DELAY = 200;
 
         scope.vlPlotHeight = function() {
           return element.height();
@@ -54,7 +55,7 @@ angular.module('vlui')
 
         function destroyView() {
           if (view) {
-            tooltip.destroy(); // remove tooltip event listners on view
+            tooltip.destroy(); // destroy tooltip (promise and event listners)
             view.off('mouseover');
             view.off('mouseout');
             view.destroy();
@@ -239,7 +240,7 @@ angular.module('vlui')
                   tooltip = vl.tooltip(view, scope.chart.vlSpec, {
                     onAppear: onTooltipAppear,
                     onDisappear: onTooltipDisappear,
-                    delay: 200
+                    delay: TOOLTIP_DELAY
                   });
                 }
               } catch (e) {
@@ -284,11 +285,6 @@ angular.module('vlui')
           if (hoverPromise) {
             $timeout.cancel(hoverPromise);
             hoverPromise = null;
-          }
-
-          if (tooltipPromise) {
-            $timeout.cancel(tooltipPromise);
-            tooltipPromise = null;
           }
 
           // if (renderQueueNextPromise) {
