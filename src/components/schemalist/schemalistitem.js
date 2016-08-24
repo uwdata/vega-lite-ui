@@ -46,8 +46,8 @@ angular.module('vlui')
         var allowedCasting = {
           integer: [vl.type.QUANTITATIVE, vl.type.ORDINAL, vl.type.NOMINAL],
           number: [vl.type.QUANTITATIVE, vl.type.ORDINAL, vl.type.NOMINAL],
-          date: [vl.TEMPORAL, vl.type.NOMINAL, vl.type.ORDINAL],
-          string: [vl.type.ORDINAL, vl.type.NOMINAL],
+          date: [vl.TEMPORAL],
+          string: [vl.type.NOMINAL],
           boolean: [vl.type.ORDINAL, vl.type.NOMINAL],
           all: [vl.type.QUANTITATIVE, vl.type.TEMPORAL, vl.type.ORDINAL, vl.type.NOMINAL]
         };
