@@ -3,8 +3,7 @@
   <!-- Above the fold functions -->
   <div>
     <label class="func-label field-func"
-      ng-repeat="f in func.list.aboveFold"
-      ng-class="{none: !f}">
+      ng-repeat="f in func.list.aboveFold">
       <input type="radio" ng-value="f" ng-model="func.selected" ng-change="selectChanged()">
       {{f || 'NONE'}}
     </label>
