@@ -48,7 +48,7 @@ angular.module('vlui')
           number: [vl.type.QUANTITATIVE, vl.type.ORDINAL, vl.type.NOMINAL],
           date: [vl.TEMPORAL],
           string: [vl.type.NOMINAL],
-          boolean: [vl.type.ORDINAL, vl.type.NOMINAL],
+          boolean: [vl.type.NOMINAL],
           all: [vl.type.QUANTITATIVE, vl.type.TEMPORAL, vl.type.ORDINAL, vl.type.NOMINAL]
         };
 
