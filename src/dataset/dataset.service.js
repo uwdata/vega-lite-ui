@@ -10,7 +10,6 @@ angular.module('vlui')
     Dataset.datasets = datasets;
     Dataset.dataset = datasets[1];
     Dataset.currentDataset = undefined;  // dataset before update
-    Dataset.dataschema = [];
     Dataset.stats = {};
     Dataset.type = undefined;
 
@@ -111,9 +110,6 @@ angular.module('vlui')
 
       Dataset.schema = cql.schema.Schema.build(data);
       // TODO: find all reference of Dataset.stats.sample and replace
-
-      // TODO: find all reference of Dataset.dataschema and replace
-      Dataset.dataschema = getFieldDefs(Dataset.schema);
     }
 
     Dataset.add = function(dataset) {

@@ -55,7 +55,7 @@ angular.module('vlui')
           if (cql.enumSpec.isEnumSpec(fieldDef.field)) {
             scope.allowedTypes = allowedCasting.all;
           } else {
-            scope.allowedTypes = allowedCasting[Dataset.schema.type(fieldDef.field)];
+            scope.allowedTypes = allowedCasting[fieldDef.type];
           }
 
           scope.isAnyField = cql.enumSpec.isEnumSpec(fieldDef.field);
