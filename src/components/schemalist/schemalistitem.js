@@ -53,10 +53,11 @@ angular.module('vlui')
         };
 
         var unwatchFieldDef = scope.$watch('fieldDef', function(fieldDef){
+          console.log(fieldDef);
           if (cql.enumSpec.isEnumSpec(fieldDef.field)) {
             scope.allowedTypes = allowedCasting.all;
           } else {
-            scope.allowedTypes = allowedCasting[fieldDef.type];
+            scope.allowedTypes = allowedCasting[fieldDef.primitiveType];
           }
 
           scope.isAnyField = cql.enumSpec.isEnumSpec(fieldDef.field);
