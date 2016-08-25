@@ -44,10 +44,11 @@ angular.module('vlui')
         // TODO(https://github.com/vega/vega-lite-ui/issues/187):
         // consider if we can use validator / cql instead
         var allowedCasting = {
-          quantitative: [vl.type.QUANTITATIVE, vl.type.ORDINAL, vl.type.NOMINAL],
-          ordinal: [vl.type.ORDINAL, vl.type.NOMINAL],
-          nominal: [vl.type.NOMINAL, vl.type.ORDINAL],
-          temporal: [vl.type.TEMPORAL, vl.type.ORDINAL, vl.type.NOMINAL],
+          integer: [vl.type.QUANTITATIVE, vl.type.ORDINAL, vl.type.NOMINAL],
+          number: [vl.type.QUANTITATIVE, vl.type.ORDINAL, vl.type.NOMINAL],
+          date: [vl.TEMPORAL],
+          string: [vl.type.NOMINAL],
+          boolean: [vl.type.NOMINAL],
           all: [vl.type.QUANTITATIVE, vl.type.TEMPORAL, vl.type.ORDINAL, vl.type.NOMINAL]
         };
 

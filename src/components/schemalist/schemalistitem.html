@@ -19,7 +19,7 @@
   >
 </field-info>
 <div class="drop-container">
-  <div class="popup-menu schema-menu">
+  <div class="popup-menu schema-menu" ng-hide="allowedTypes.length<=1"><!--HACK: (ng-hide) popup is still being triggered-->
     <div class="mb5 field-type" ng-if="allowedTypes.length>1 && !isAnyField">
       <h4>Type</h4>
       <label class="type-label"
