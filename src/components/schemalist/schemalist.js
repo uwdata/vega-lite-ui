@@ -1,15 +1,19 @@
 'use strict';
 
 angular.module('vlui')
-  .directive('schemaList', function() {
+  .directive('schemaList', function(vl) {
     return {
       templateUrl: 'components/schemalist/schemalist.html',
       restrict: 'E',
       scope: {
         orderBy: '<',
         fieldDefs: '<',
-        showAdd: '<'
+        showAdd: '<',
+        showCount: '<'
       },
-      replace: true
+      replace: true,
+      link: function(scope) {
+        scope.countFieldDef = {field: '*', aggregate: vl.aggregate.AggregateOp.COUNT, type: vl.type.QUANTITATIVE};
+      }
     };
   });
