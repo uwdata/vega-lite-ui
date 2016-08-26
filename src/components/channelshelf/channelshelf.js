@@ -64,7 +64,7 @@ angular.module('vlui')
          */
         scope.fieldDropped = function() {
           var pill = Pills.get(scope.channelId);
-          scope.hasFunctions = pill.type !== 'nominal' && pill.type !== 'ordinal';
+          scope.hasFunctions = pill.aggregate ? false : pill.type !== 'nominal' && pill.type !== 'ordinal';
 
           // validate type
           var types = Schema.schema.definitions.Type.enum;
