@@ -29,7 +29,7 @@
       <a ng-if="consts.debug && showDebug"
         class="command debug">
         <!-- Mouseover on wrench icon is the trigger to lazy-render the popup -->
-        <i class="fa fa-wrench" ng-click="shCopied=''; vlCopied=''; vgCopied='';"></i>
+        <i class="fa fa-wrench" ng-click="shCopied=''; vlCopied=''; vgCopied='';" ng-mouseover="initializePopup();"></i>
       </a>
       <vl-plot-group-popup ng-if="consts.debug && showDebug && renderPopup"></vl-plot-group-popup>
 
