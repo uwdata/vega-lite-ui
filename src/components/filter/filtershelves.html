@@ -1,5 +1,6 @@
 <a class="right"  ng-click="clearFilter()"><i class="fa fa-eraser"></i> Clear</a>
 <h2>Filter</h2>
+<null-filter-directive spec="spec"></null-filter-directive>
 <div class="shelf-group"
     ng-repeat="(field, filter) in filterManager.filterIndex"
     ng-if="filter.enabled"

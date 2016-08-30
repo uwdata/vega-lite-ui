@@ -13,14 +13,15 @@ angular.module('vlui')
       restrict: 'E',
       replace: false,
       scope: {
+        spec: '='
       },
-      link: function(scope, element) {
+      link: function(scope) {
         scope.Dataset = Dataset;
         scope.filterManager = FilterManager;
         scope.clearFilter = clearFilter;
         scope.removeFilter = removeFilter;
 
-        function clearFilter(field) {
+        function clearFilter() {
           FilterManager.reset();
         }
 

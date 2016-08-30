@@ -62,11 +62,11 @@
 
       <a ng-if="showFilterNull && chart.vlSpec && toggleFilterNull.support(chart.vlSpec)"
         class="command" ng-click="toggleFilterNull(chart.vlSpec)"
-        title="Filter Null"
+        title="Filter Invalid Values"
         ng-class='{active: chart.vlSpec && (chart.vlSpec.transform||{}).filterInvalid}'>
         <i class="fa fa-filter"></i>
         <small ng-if="showLabel">Filter</small>
-        <small>NULL</small>
+        <small>Invalids</small>
       </a>
 
       <a ng-if="showTranspose"
