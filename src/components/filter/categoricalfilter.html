@@ -2,16 +2,17 @@
   <div class="actions">
     <div class="right">
       <a ng-click="selectAll()">All</a>
-      <a ng-click="selectNone()">None</a>
+      <!--<a ng-click="selectNone()">None</a>-->
     </div>
     Selected {{filter.in.length}}/{{values.length}}
   </div>
-  <div class="values">
+  <div class="values scroll-y no-scroll-x">
     <div ng-repeat="val in values">
       <label>
         <input type="checkbox" ng-model="include[stringify(val)]" ng-change="filterChange()">
         {{val+''}} <!-- have to coerce to string so null appear-->
       </label>
+      <a class="right keep-only" ng-click="keepOnly(val)">only</a>
     </div>
   </div>
 </div>

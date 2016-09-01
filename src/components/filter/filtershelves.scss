@@ -1,4 +1,4 @@
-.filter-scroll-y-container {
+.filter-absolute-container {
   position: absolute;
   top: 30px;
   bottom: 0;
@@ -29,12 +29,4 @@
   padding: 0 4px 4px;
   display: flex;
   flex-direction: column;
-}
-
-.categorical-filter-box .actions {
-  margin-bottom: 4px;
-}
-
-.categorical-filter-box .values {
-  overflow-y: scroll;
 }

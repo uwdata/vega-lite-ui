@@ -22,6 +22,7 @@ angular.module('vlui')
 
         scope.selectAll = selectAll;
         scope.selectNone = selectNone;
+        scope.keepOnly = keepOnly;
         scope.stringify = JSON.stringify;
 
         scope.filterChange = function() {
@@ -35,6 +36,11 @@ angular.module('vlui')
 
         function selectNone() {
           setInclude([]);
+          scope.filterChange();
+        }
+
+        function keepOnly(onlyValue) {
+          setInclude([onlyValue]);
           scope.filterChange();
         }
 
