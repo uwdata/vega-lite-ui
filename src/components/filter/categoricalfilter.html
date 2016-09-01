@@ -1,18 +1,18 @@
 <div class="categorical-filter-box filter-box">
   <div class="actions">
-    <div class="right">
-      <a ng-click="selectAll()">All</a>
-      <!--<a ng-click="selectNone()">None</a>-->
+    <div class="right selected-status">
+      ({{filter.in.length}}/{{values.length}} selected)
     </div>
-    Selected {{filter.in.length}}/{{values.length}}
+    <a ng-click="selectAll()" class="select-all">Select All</a>
   </div>
   <div class="values scroll-y no-scroll-x">
-    <div ng-repeat="val in values">
+    <div ng-repeat="val in values" ng-mouseenter="showKeepOnly=true" ng-mouseleave="showKeepOnly=false">
       <label>
         <input type="checkbox" ng-model="include[stringify(val)]" ng-change="filterChange()">
-        {{val+''}} <!-- have to coerce to string so null appear-->
+          {{val+''}} <!-- have to coerce to string so null appear-->
+        </span>
       </label>
-      <a class="right keep-only" ng-click="keepOnly(val)">only</a>
+      <a ng-show="showKeepOnly" ng-init="showKeepOnly=false" class="right keep-only" ng-click="keepOnly(val)">Keep Only</a>
     </div>
   </div>
 </div>

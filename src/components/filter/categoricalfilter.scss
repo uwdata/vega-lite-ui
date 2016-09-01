@@ -1,7 +1,23 @@
+.filter-box.categorical-filter-box {
+  padding: 0 8px 0 8px;
+}
+
 .actions {
   margin-bottom: 4px;
 }
 
-.keep-only {
+label {
+  max-width: 70%;
+}
+
+.select-all:hover {
+  color: #006bb3;
+}
+
+.selected-status {
   color: gray;
+}
+
+.keep-only {
+  color: #bfbfbf;
 }
