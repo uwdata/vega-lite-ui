@@ -22,6 +22,11 @@
         ng-mouseleave="fieldInfoMouseout(fieldDef, $index)"
       ></field-info>
     </div>
+
+    <i ng-if="showFilterInfo && hasFilter"
+      title="{{filterInfo}}"
+      class="fa fa-filter filter-info"></i>
+
     <div style="flex-grow:1"><!--blank div that pushes .tooltbox to the right--></div>
     <div class="toolbox">
       <a ng-if="consts.debug && showDebug"

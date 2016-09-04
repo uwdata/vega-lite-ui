@@ -39,6 +39,7 @@ angular.module('vlui')
 
         /** Set of fieldDefs for showing field info.  For Voyager2, this might be just a subset of fields that are ambiguous. */
         fieldSet: '<',
+        showFilterInfo: '<',
 
         showBookmark: '<',
         showDebug: '<',
@@ -74,6 +75,36 @@ angular.module('vlui')
             Bookmarks.add(chart, scope.listTitle);
           }
         };
+
+        // Show filters (if any)
+        var unwatchFilter = scope.$watch('chart.vlSpec.transform.filter', function(vlSpecFilter) {
+          if (!vlSpecFilter) {
+            scope.hasFilter = false;
+            return;
+          }
+
+          scope.hasFilter = true;
+
+          var filterInfo = "Filter";
+          vlSpecFilter.forEach(function(filter) {
+            // add filter field name
+            filterInfo = filterInfo + "\n" + filter.field + " \u2208 ";
+
+            // add Q or N filter range
+            if (filter.range) {
+              filterInfo = filterInfo + "[" + filter.range.join(', ') + "]";
+            }
+            else if (filter.in) {
+              if (filter.in.length < 5) {
+                filterInfo = filterInfo + "{" + filter.in.join(', ') + "}";
+              }
+              else {
+                filterInfo = filterInfo + "{" + filter.in[0] + ", ..., " + filter.in[filter.in.length-1] + "}";
+              }
+            }
+          });
+          scope.filterInfo = filterInfo;
+        });
 
         var fieldHoverPromise = null;
         var previewPromise = null;
@@ -408,6 +439,7 @@ angular.module('vlui')
         };
 
         scope.$on('$destroy', function() {
+          unwatchFilter();
           scope.chart = null;
         });
       }
