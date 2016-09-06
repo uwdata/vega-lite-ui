@@ -1,0 +1,93 @@
+<div class="shelf-group">
+  <div class="shelf" ng-class="{disabled: disabled || !supportMark(channelId, mark), 'any': isAnyChannel}">
+    <div class="shelf-label"
+      ng-class="{expanded: propsExpanded}">
+      <!-- <i class="fa fa-caret-down"></i> -->
+      {{ isAnyChannel ? 'any' : channelId }}
+    </div>
+    <!--<field-drop field-def="encoding[channelId]" types="schema.properties.type.enum"></field-drop>-->
+    <div class="field-drop"
+     ng-model="pills[channelId]"
+     data-drop="!disabled && supportMark(channelId, mark)"
+     jqyoui-droppable="{onDrop:'fieldDropped'}"
+     data-jqyoui-options="{activeClass: 'drop-active'}">
+
+      <field-info ng-show="encoding[channelId].field"
+        ng-class="{
+          expanded: funcsExpanded,
+          any: isAnyField || isAnyFunction,
+          'enumerated-field': isEnumeratedField,
+          'enumerated-channel': isEnumeratedChannel,
+          highlighted: isHighlighted(channelId)
+        }"
+        field-def="encoding[channelId]"
+        show-type="true"
+        show-caret="true"
+        show-enum-spec-fn="true"
+        disable-caret="encoding[channelId].aggregate==='count' || !hasFunctions"
+        popup-content="fieldInfoPopupContent"
+        show-remove="true"
+        remove-action="removeField()"
+        class="selected draggable full-width"
+        data-drag="true"
+        ng-model="pills[channelId]"
+        jqyoui-draggable="{onStart: 'fieldDragStart', onStop:'fieldDragStop'}"
+        data-jqyoui-options="{revert: 'invalid', helper: 'clone'}"
+        >
+      </field-info>
+
+      <span class="placeholder" ng-if="!encoding[channelId].field">
+        drop a field here
+      </span>
+    </div>
+  </div>
+  <div class="drop-container">
+    <div class="popup-menu shelf-properties shelf-properties-{{channelId}}">
+      <!--<div>
+        <property-editor ng-show="schema.properties.value"
+          id="channelId + 'value'"
+          type="schema.properties.value.type"
+          enum="schema.properties.value.enum"
+          prop-name="'value'"
+          group="encoding[channelId]"
+          description="schema.properties.value.description"
+          min="schema.properties.value.minimum"
+          max="schema.properties.value.maximum"
+          role="schema.properties.value.role"
+          default="schema.properties.value.default"
+        ></property-editor>
+      </div>
+
+      <div ng-repeat="group in ['legend', 'scale', 'axis', 'bin']"
+           ng-show="schema.properties[group]">
+        <h4>{{ group }}</h4>
+        <div ng-repeat="(propName, scaleProp) in schema.properties[group].properties"
+             ng-init="id = channelId + group + $index"
+             ng-show="scaleProp.supportedTypes ? scaleProp.supportedTypes[encoding[channelId].type] : true">
+          <property-editor id="id"
+            type="scaleProp.type"
+            enum="scaleProp.enum"
+            prop-name="propName"
+            group="encoding[channelId][group]"
+            description="scaleProp.description"
+            min="scaleProp.minimum"
+            max="scaleProp.maximum"
+            role="scaleProp.role"
+            default="scaleProp.default"
+          ></property-editor>
+        </div>
+
+      </div>
+      -->
+    </div>
+    <div class="popup-menu shelf-functions shelf-functions-{{channelId}}" ng-hide="!hasFunctions"><!--HACK: (ng-hide) popup is still being triggered-->
+      <function-select ng-if="!preview"
+        field-def="encoding[channelId]"
+        channel-id="channelId"
+        support-any="supportAny && consts.wildcardFn"
+      ></function-select>
+
+      <!-- <a class="remove-field" ng-click="removeField()">Remove Field</a> -->
+    </div>
+  </div>
+</div>

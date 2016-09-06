@@ -1,12 +1,12 @@
 <div>
   <div>
-    <span class="right domain-label">{{domainMax}}</span>
-    <span class="domain-label">{{domainMin}}</span>
+    <span class="right domain-label">{{domainMax | timeUnitFilter}}</span>
+    <span class="domain-label">{{domainMin | timeUnitFilter}}</span>
   </div>
   <div range-slider min="domainMin" max="domainMax"
     model-min="localMin" model-max="localMax"
     show-values="true" attach-handle-values="true"
-    on-handle-up="updateRange()">
+    on-handle-up="updateRange()" filter="timeUnitFilter">
   </div>
 </div>
 
