@@ -47,34 +47,38 @@ angular.module('vlui')
     // update the schema and stats
     Dataset.onUpdate = [];
 
+    Dataset.getUpdate = function(dataset, updateFromData) {
+        if (dataset.values) {
+            return $q(function(resolve, reject) {
+                // jshint unused:false
+                Dataset.type = undefined;
+                updateFromData(dataset, dataset.values);
+                resolve();
+            });
+        } else {
+            return $http.get(dataset.url, {cache: true}).then(function(response) {
+                var data;
+
+                // first see whether the data is JSON, otherwise try to parse CSV
+                if (_.isObject(response.data)) {
+                    data = response.data;
+                    Dataset.type = 'json';
+                } else {
+                    data = util.read(response.data, {type: 'csv'});
+                    Dataset.type = 'csv';
+                }
+
+                updateFromData(dataset, data);
+            });
+        }
+    };
+
     Dataset.update = function(dataset) {
       var updatePromise;
 
       Logger.logInteraction(Logger.actions.DATASET_CHANGE, dataset.name);
 
-      if (dataset.values) {
-        updatePromise = $q(function(resolve, reject) {
-          // jshint unused:false
-          Dataset.type = undefined;
-          updateFromData(dataset, dataset.values);
-          resolve();
-        });
-      } else {
-        updatePromise = $http.get(dataset.url, {cache: true}).then(function(response) {
-          var data;
-
-          // first see whether the data is JSON, otherwise try to parse CSV
-          if (_.isObject(response.data)) {
-             data = response.data;
-             Dataset.type = 'json';
-          } else {
-            data = util.read(response.data, {type: 'csv'});
-            Dataset.type = 'csv';
-          }
-
-          updateFromData(dataset, data);
-        });
-      }
+      updatePromise = Dataset.getUpdate(dataset, updateFromData);
 
       Dataset.onUpdate.forEach(function(listener) {
         updatePromise = updatePromise.then(listener);
