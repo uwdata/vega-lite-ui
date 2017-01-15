@@ -88,6 +88,10 @@ angular.module('vlui')
           }
           else {
             Bookmarks.add(chart, scope.listTitle);
+
+            $timeout(function () {
+                element.find('textarea.annotation')[0].focus();
+            });
           }
         };
 
